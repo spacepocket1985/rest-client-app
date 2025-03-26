@@ -55,7 +55,7 @@ function SignIn() {
             type="submit"
             disabled={!isValid}
             className={`w-full p-2 text-white font-semibold rounded-md   
-              ${isValid ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} transition duration-200`}
+              ${!isValid ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} transition duration-200`}
           >
             Sign in
           </button>

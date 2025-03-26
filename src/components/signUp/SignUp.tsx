@@ -18,7 +18,7 @@ function SignUp() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isValid },
   } = useForm<SignUpFormType>({
     mode: 'onChange',
   });
@@ -63,9 +63,9 @@ function SignUp() {
           />
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={!isValid}
             className={`w-full p-2 text-white font-semibold rounded-md   
-              ${isSubmitting ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} transition duration-200`}
+              ${!isValid ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} transition duration-200`}
           >
             {'Sign up'}
           </button>
