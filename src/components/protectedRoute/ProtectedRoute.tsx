@@ -9,6 +9,7 @@ const ProtectedRoute = (Component: (props: PropsWithChildren) => JSX.Element, wi
 
     const { user } = useAuth();
     const router = useRouter();
+
     console.log('withAuth = ', withAuth);
     console.log('user= ', user);
     useEffect(() => {
