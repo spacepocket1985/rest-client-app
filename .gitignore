@@ -26,3 +26,5 @@ coverage
 
 # ENV
 .env.local
+
+.vercel

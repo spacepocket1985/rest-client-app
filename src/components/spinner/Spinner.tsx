@@ -22,7 +22,10 @@ export const Spinner = (): JSX.Element => {
             stroke="#1976d2"
             strokeWidth="7"
           ></path>
-          <path d="M49 3L49 27L61 15L49 3" fill="#1976d2"></path>
+          <path
+            d="M49 3L49 27L61 15L49 3"
+            fill="#1976d2"
+          ></path>
           <animateTransform
             attributeName="transform"
             type="rotate"

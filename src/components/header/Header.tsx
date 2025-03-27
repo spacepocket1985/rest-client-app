@@ -11,11 +11,14 @@ export default function Header() {
   return (
     <header className="bg-gray-200 mb-4 p-5">
       <div className="flex justify-between items-center">
-        <Link href={RoutePaths.WELCOME} className="text-lg font-bold">
+        <Link
+          href={RoutePaths.WELCOME}
+          className="text-lg font-bold"
+        >
           {'Logo'}
         </Link>
         <div className="flex space-x-4">
-          {user ? (
+          {user ?
             <>
               <button
                 onClick={logout}
@@ -31,8 +34,7 @@ export default function Header() {
                 {'Home'}
               </Link>
             </>
-          ) : (
-            <>
+          : <>
               <Link
                 href={RoutePaths.SIGNIN}
                 className="text-blue-600 hover:underline"
@@ -46,7 +48,7 @@ export default function Header() {
                 {'Sign up'}
               </Link>
             </>
-          )}
+          }
         </div>
       </div>
     </header>

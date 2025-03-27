@@ -21,10 +21,7 @@ function SignIn() {
     mode: 'onChange',
   });
 
-  const logInUser: SubmitHandler<SignInFormType> = async ({
-    email,
-    password,
-  }) => {
+  const logInUser: SubmitHandler<SignInFormType> = async ({ email, password }) => {
     try {
       await logInWithEmailAndPassword(email, password);
     } catch (error) {
@@ -36,7 +33,10 @@ function SignIn() {
     <div className="flex items-center justify-center  bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold text-center mb-4">Sign in</h2>
-        <form onSubmit={handleSubmit(logInUser)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(logInUser)}
+          className="space-y-4"
+        >
           <input
             type="text"
             {...register('email')}

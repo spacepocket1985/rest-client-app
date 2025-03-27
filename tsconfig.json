@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.app.json",
   "compilerOptions": {
     "baseUrl": "./",
     "plugins": [
@@ -7,16 +8,16 @@
       }
     ],
     "paths": {
+      "@app/*": ["src/app/*"],
       "@components/*": ["src/components/*"],
-      "@assets/*": ["src/public/assets/*"],
+      "@assets/*": ["src/assets/*"],
+      "@constants/*": ["src/constants/*"],
       "@context/*": ["src/context/*"],
-      "@utils/*": ["src/utils/*"],
-      "@routes/*": ["src/routes/*"],
-      "@types/*": ["src/types/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@store/*": ["src/store/*"],
-      "@service/*": ["src/service/*"],
-      "@styles/*": ["src/styles/*"]
+      "@tests/*": ["src/tests/*"],
+      "@types/*": ["src/types/*"],
+      "@ui/*": ["src/ui/*"],
+      "@utils/*": ["src/utils/*"]
     },
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
