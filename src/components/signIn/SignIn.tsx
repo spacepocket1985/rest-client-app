@@ -1,10 +1,9 @@
-/* eslint-disable react-refresh/only-export-components */
 'use client';
 
-import ProtectedRoute from '@components/protectedRoute/ProtectedRoute';
-import { logInWithEmailAndPassword } from '@utils/firebase';
-import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import Link from 'next/link';
+import ProtectedRoute, { AuthRequirement } from '@components/protectedRoute/ProtectedRoute';
+import { logInWithEmailAndPassword } from '@utils/firebase';
 import { RoutePaths } from 'src/constants/routePaths';
 
 export type SignInFormType = {
@@ -32,7 +31,7 @@ function SignIn() {
   return (
     <div className="flex items-center justify-center  bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold text-center mb-4">Sign in</h2>
+        <h2 className="text-2xl font-bold text-center mb-4"> {'Sign in'}</h2>
         <form
           onSubmit={handleSubmit(logInUser)}
           className="space-y-4"
@@ -57,7 +56,7 @@ function SignIn() {
             className={`w-full p-2 text-white font-semibold rounded-md   
               ${!isValid ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} transition duration-200`}
           >
-            Sign in
+            {'Sign in'}
           </button>
         </form>
         <p className="mt-4 text-center">
@@ -74,4 +73,4 @@ function SignIn() {
   );
 }
 
-export default ProtectedRoute(SignIn);
+export default ProtectedRoute(SignIn, AuthRequirement.WithoutAuth);

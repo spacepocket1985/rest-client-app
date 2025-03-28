@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '@context/AuthContext';
 import { logout } from '@utils/firebase';
 import { RoutePaths } from 'src/constants/routePaths';
+import { btnOrLinkStyle } from '@constants/btnOrLinkStyle';
 
 export default function Header() {
   const { user, isLoading } = useAuth();
@@ -13,23 +14,24 @@ export default function Header() {
       <div className="flex justify-between items-center">
         <Link
           href={RoutePaths.WELCOME}
-          className="text-lg font-bold"
+          className={btnOrLinkStyle}
         >
           {'Logo'}
         </Link>
         <div className="flex space-x-4">
+          <button className={btnOrLinkStyle}>{'Language Toggle'}</button>
           {user ?
             <>
               <button
                 onClick={logout}
                 disabled={!!isLoading}
-                className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition duration-200"
+                className={btnOrLinkStyle}
               >
                 {'Log out'}
               </button>
               <Link
                 href={RoutePaths.WELCOME}
-                className="text-blue-600 hover:underline"
+                className={btnOrLinkStyle}
               >
                 {'Home'}
               </Link>
@@ -37,13 +39,13 @@ export default function Header() {
           : <>
               <Link
                 href={RoutePaths.SIGNIN}
-                className="text-blue-600 hover:underline"
+                className={btnOrLinkStyle}
               >
                 {'Sign in'}
               </Link>
               <Link
                 href={RoutePaths.SIGNUP}
-                className="text-blue-600 hover:underline"
+                className={btnOrLinkStyle}
               >
                 {'Sign up'}
               </Link>

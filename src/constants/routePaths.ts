@@ -2,5 +2,7 @@ export enum RoutePaths {
   WELCOME = '/',
   SIGNIN = '/auth/sign-in',
   SIGNUP = '/auth/sign-up',
-  REST = '/rest-client/',
+  REST = '/rest-client',
+  History = '/history',
+  Variables = '/variables ',
 }

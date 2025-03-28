@@ -1,10 +1,9 @@
-/* eslint-disable react-refresh/only-export-components */
 'use client';
 
-import ProtectedRoute from '@components/protectedRoute/ProtectedRoute';
-import { registerWithEmailAndPassword } from '@utils/firebase';
-import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import Link from 'next/link';
+import ProtectedRoute, { AuthRequirement } from '@components/protectedRoute/ProtectedRoute';
+import { registerWithEmailAndPassword } from '@utils/firebase';
 import { RoutePaths } from 'src/constants/routePaths';
 
 type SignUpFormType = {
@@ -34,7 +33,7 @@ function SignUp() {
   return (
     <div className="flex items-center justify-center  bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
+        <h2 className="text-2xl font-bold text-center mb-4">{'Sign Up'}</h2>
         <form
           onSubmit={handleSubmit(registerUser)}
           className="space-y-4"
@@ -83,4 +82,4 @@ function SignUp() {
   );
 }
 
-export default ProtectedRoute(SignUp);
+export default ProtectedRoute(SignUp, AuthRequirement.WithoutAuth);
