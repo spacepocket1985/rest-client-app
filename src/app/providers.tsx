@@ -2,8 +2,6 @@
 
 import { AuthProvider } from '@context/AuthContext';
 
-export const Providers: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <AuthProvider>{children}</AuthProvider>;
 };

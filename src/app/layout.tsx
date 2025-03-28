@@ -24,9 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <Header />
-          <main className="flex flex-col items-center justify-self-center">
-            {children}
-          </main>
+          <main className="flex flex-col items-center justify-self-center">{children}</main>
           <Footer />
         </Providers>
       </body>
