@@ -58,14 +58,12 @@ function SignIn() {
             className={`w-full p-2 font-semibold`}
           />
         </form>
-        <p className="mt-4 text-center">
-          {'Don’t have an account?'}
-          <UILink
-            text={'Register'}
-            href={RoutePaths.SIGNUP}
-            className="text-blue-500 font-semibold hover:underline"
-          />
-        </p>
+        <p className="mt-4 mb-2 text-center">{'Don’t have an account?'} </p>
+        <UILink
+          text={'Register'}
+          href={RoutePaths.SIGNUP}
+          className="text-blue-500 font-semibold hover:underline"
+        />
       </div>
     </div>
   );
