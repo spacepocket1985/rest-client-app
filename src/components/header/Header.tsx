@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useAuth } from '@context/AuthContext';
 import { logout } from '@utils/firebase';
 import { RoutePaths } from 'src/constants/routePaths';
-import { btnOrLinkStyle } from '@constants/btnOrLinkStyle';
+import { UIButton } from '@ui/UIButton';
+import { UILink } from '@ui/UILink';
 
 export default function Header() {
   const { user, isLoading } = useAuth();
@@ -12,43 +12,35 @@ export default function Header() {
   return (
     <header className="bg-gray-200 mb-4 p-5">
       <div className="flex justify-between items-center">
-        <Link
+        <UILink
+          text={'Logo'}
           href={RoutePaths.WELCOME}
-          className={btnOrLinkStyle}
-        >
-          {'Logo'}
-        </Link>
+        />
+
         <div className="flex space-x-4">
-          <button className={btnOrLinkStyle}>{'Language Toggle'}</button>
+          <UIButton text={'Language Toggle'} />
           {user ?
             <>
-              <button
+              <UIButton
+                text={'Log out'}
                 onClick={logout}
                 disabled={!!isLoading}
-                className={btnOrLinkStyle}
-              >
-                {'Log out'}
-              </button>
-              <Link
+              />
+
+              <UILink
+                text={'Home'}
                 href={RoutePaths.WELCOME}
-                className={btnOrLinkStyle}
-              >
-                {'Home'}
-              </Link>
+              />
             </>
           : <>
-              <Link
+              <UILink
+                text={'Sign in'}
                 href={RoutePaths.SIGNIN}
-                className={btnOrLinkStyle}
-              >
-                {'Sign in'}
-              </Link>
-              <Link
+              />
+              <UILink
+                text={'Sign up'}
                 href={RoutePaths.SIGNUP}
-                className={btnOrLinkStyle}
-              >
-                {'Sign up'}
-              </Link>
+              />
             </>
           }
         </div>

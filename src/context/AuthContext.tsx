@@ -75,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => clearInterval(interval);
   }, [user, loading, router, name]);
 
-  return <AuthContext.Provider value={{ user, loading, isLoading, name }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, loading, isLoading, name }}>{!loading && children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

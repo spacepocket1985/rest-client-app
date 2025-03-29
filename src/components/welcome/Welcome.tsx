@@ -1,12 +1,25 @@
 'use client';
 
-import { btnOrLinkStyle } from '@constants/btnOrLinkStyle';
 import { RoutePaths } from '@constants/routePaths';
 import { useAuth } from '@context/AuthContext';
-import Link from 'next/link';
+import { UILink } from '@ui/UILink';
 
 export default function Welcome() {
   const { user, name } = useAuth();
+
+  const userLinks = [
+    { title: 'Rest-client', link: RoutePaths.REST },
+    { title: 'History', link: RoutePaths.History },
+    { title: 'Variables', link: RoutePaths.Variables },
+  ];
+
+  const renderUserLinks = userLinks.map((item) => (
+    <UILink
+      key={item.link}
+      text={item.title}
+      href={item.link}
+    />
+  ));
 
   return (
     <>
@@ -16,26 +29,7 @@ export default function Welcome() {
           <>
             <div>
               <h3>{'Available utilities and features'}</h3>
-              <div className="flex flex-col space-y-2 mt-4">
-                <Link
-                  href={RoutePaths.REST}
-                  className={btnOrLinkStyle}
-                >
-                  {'Rest-client'}
-                </Link>
-                <Link
-                  href={RoutePaths.History}
-                  className={btnOrLinkStyle}
-                >
-                  {'History'}
-                </Link>
-                <Link
-                  href={RoutePaths.Variables}
-                  className={btnOrLinkStyle}
-                >
-                  {'Variables'}
-                </Link>
-              </div>
+              <div className="flex flex-col space-y-2 mt-4">{renderUserLinks}</div>
             </div>
           </>
         : <>

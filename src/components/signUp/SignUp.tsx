@@ -1,10 +1,12 @@
 'use client';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Link from 'next/link';
+
 import ProtectedRoute, { AuthRequirement } from '@components/protectedRoute/ProtectedRoute';
 import { registerWithEmailAndPassword } from '@utils/firebase';
 import { RoutePaths } from 'src/constants/routePaths';
+import { UIButton } from '@ui/UIButton';
+import { UILink } from '@ui/UILink';
 
 type SignUpFormType = {
   name: string;
@@ -59,23 +61,20 @@ function SignUp() {
             placeholder={'password'}
             required
           />
-          <button
+          <UIButton
+            text={'Sign up'}
             type="submit"
             disabled={!isValid}
-            className={`w-full p-2 text-white font-semibold rounded-md   
-              ${!isValid ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} transition duration-200`}
-          >
-            {'Sign up'}
-          </button>
+            className={`w-full p-2 font-semibold`}
+          />
         </form>
         <p className="mt-4 text-center">
           {'Already have an account? '}
-          <Link
+          <UILink
+            text={'Login'}
             href={RoutePaths.SIGNIN}
             className="text-blue-500 font-semibold hover:underline"
-          >
-            {'Login'}
-          </Link>
+          />
         </p>
       </div>
     </div>

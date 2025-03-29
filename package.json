@@ -42,6 +42,7 @@
     "@typescript-eslint/parser": "^8.25.0",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/coverage-istanbul": "^3.0.9",
+    "classnames": "^2.5.1",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-define-config": "^2.1.0",
