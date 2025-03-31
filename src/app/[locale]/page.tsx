@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 
 export default function WelcomePage() {
   const t = useTranslations('WelcomePage');
+
   return (
     <>
       <div className={'welcomeWrapper'}>
