@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '@context/AuthContext';
 import { logout } from '@utils/firebase';
 import { RoutePaths } from 'src/constants/routePaths';
+import { LangSwitcher } from './LangSwitcher';
 
 export default function Header() {
   const { user, isLoading } = useAuth();
@@ -18,6 +19,7 @@ export default function Header() {
           {'Logo'}
         </Link>
         <div className="flex space-x-4">
+          <LangSwitcher />
           {user ?
             <>
               <button

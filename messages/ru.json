@@ -2,5 +2,10 @@
   "WelcomePage": {
     "title": "REST-Клиент",
     "welcome": "Приветствую!"
+  },
+  "Header": {
+    "signIn": "Вход",
+    "signUp": "Регистрация",
+    "logout": "Выйти"
   }
 }
