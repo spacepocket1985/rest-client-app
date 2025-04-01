@@ -6,6 +6,7 @@
   "Header": {
     "signIn": "Sign in",
     "signUp": "Sign up",
-    "logout": "Logout"
+    "logout": "Logout",
+    "home": "Home"
   }
 }

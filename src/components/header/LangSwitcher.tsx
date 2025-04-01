@@ -1,3 +1,5 @@
+'use client';
+
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -24,10 +26,10 @@ export const LangSwitcher = () => {
     <select
       value={locale}
       onChange={(e) => changeLang(e.target.value)}
-      className="rounded-xl border border-black text-black h-[25px] w-[60px] focus:border-blue-600 focus:outline-none"
+      className="rounded-md border border-black text-black h-[31px] w-[60px] focus:border-blue-600 focus:outline-none"
     >
-      <option value="en">en</option>
-      <option value="ru">ru</option>
+      <option value="en">EN</option>
+      <option value="ru">RU</option>
     </select>
   );
 };
