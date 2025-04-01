@@ -8,12 +8,14 @@ export const LangSwitcher = () => {
 
   useEffect(() => {
     const currentLocale = pathname.split('/')[1];
+
     setLocale(currentLocale);
   }, [pathname]);
 
   const changeLang = (newLocale: string) => {
     if (newLocale !== locale) {
       const newPathname = pathname.replace(/^\/(en|ru)/, `/${newLocale}`);
+
       router.push(newPathname);
     }
   };
