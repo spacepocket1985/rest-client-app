@@ -25,6 +25,8 @@ const ProtectedRoute = (Component: (props: PropsWithChildren) => JSX.Element, au
         setIsAuth(true);
       } else if (user && authRequirement === AuthRequirement.WithoutAuth) {
         router.push(RoutePaths.WELCOME);
+      } else if (!user && authRequirement === AuthRequirement.WithAuth) {
+        router.push(RoutePaths.WELCOME);
       }
     }, [user, router]);
     if (isAuth) return <Component {...props} />;

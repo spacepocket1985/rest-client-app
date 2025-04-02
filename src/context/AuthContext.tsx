@@ -33,7 +33,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!user) {
         setName(null);
         setIsLoading(false);
-        router.push(RoutePaths.WELCOME);
 
         return;
       }
