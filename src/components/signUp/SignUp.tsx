@@ -1,11 +1,12 @@
-/* eslint-disable react-refresh/only-export-components */
 'use client';
 
-import ProtectedRoute from '@components/protectedRoute/ProtectedRoute';
-import { registerWithEmailAndPassword } from '@utils/firebase';
-import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
+
+import ProtectedRoute, { AuthRequirement } from '@components/protectedRoute/ProtectedRoute';
+import { registerWithEmailAndPassword } from '@utils/firebase';
 import { RoutePaths } from 'src/constants/routePaths';
+import { UIButton } from '@ui/UIButton';
+import { UILink } from '@ui/UILink';
 
 type SignUpFormType = {
   name: string;
@@ -34,7 +35,7 @@ function SignUp() {
   return (
     <div className="flex items-center justify-center  bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
+        <h2 className="text-2xl font-bold text-center mb-4">{'Sign Up'}</h2>
         <form
           onSubmit={handleSubmit(registerUser)}
           className="space-y-4"
@@ -60,27 +61,22 @@ function SignUp() {
             placeholder={'password'}
             required
           />
-          <button
+          <UIButton
+            text={'Sign up'}
             type="submit"
             disabled={!isValid}
-            className={`w-full p-2 text-white font-semibold rounded-md   
-              ${!isValid ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} transition duration-200`}
-          >
-            {'Sign up'}
-          </button>
+            className={`w-full p-2 font-semibold`}
+          />
         </form>
-        <p className="mt-4 text-center">
-          {'Already have an account? '}
-          <Link
-            href={RoutePaths.SIGNIN}
-            className="text-blue-500 font-semibold hover:underline"
-          >
-            {'Login'}
-          </Link>
-        </p>
+        <p className="mt-4 mb-4 text-center">{'Already have an account? '}</p>
+        <UILink
+          text={'Login'}
+          href={RoutePaths.SIGNIN}
+          className="text-blue-500 font-semibold hover:underline"
+        />
       </div>
     </div>
   );
 }
 
-export default ProtectedRoute(SignUp);
+export default ProtectedRoute(SignUp, AuthRequirement.WithoutAuth);

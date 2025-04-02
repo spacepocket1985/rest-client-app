@@ -1,9 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useAuth } from '@context/AuthContext';
 import { logout } from '@utils/firebase';
 import { RoutePaths } from 'src/constants/routePaths';
+import { UIButton } from '@ui/UIButton';
+import { UILink } from '@ui/UILink';
 
 export default function Header() {
   const { user, isLoading } = useAuth();
@@ -11,42 +12,35 @@ export default function Header() {
   return (
     <header className="bg-gray-200 mb-4 p-5">
       <div className="flex justify-between items-center">
-        <Link
+        <UILink
+          text={'Logo'}
           href={RoutePaths.WELCOME}
-          className="text-lg font-bold"
-        >
-          {'Logo'}
-        </Link>
+        />
+
         <div className="flex space-x-4">
+          <UIButton text={'Language Toggle'} />
           {user ?
             <>
-              <button
+              <UIButton
+                text={'Log out'}
                 onClick={logout}
                 disabled={!!isLoading}
-                className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition duration-200"
-              >
-                {'Log out'}
-              </button>
-              <Link
+              />
+
+              <UILink
+                text={'Home'}
                 href={RoutePaths.WELCOME}
-                className="text-blue-600 hover:underline"
-              >
-                {'Home'}
-              </Link>
+              />
             </>
           : <>
-              <Link
+              <UILink
+                text={'Sign in'}
                 href={RoutePaths.SIGNIN}
-                className="text-blue-600 hover:underline"
-              >
-                {'Sign in'}
-              </Link>
-              <Link
+              />
+              <UILink
+                text={'Sign up'}
                 href={RoutePaths.SIGNUP}
-                className="text-blue-600 hover:underline"
-              >
-                {'Sign up'}
-              </Link>
+              />
             </>
           }
         </div>
