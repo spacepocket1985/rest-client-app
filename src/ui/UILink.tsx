@@ -1,13 +1,13 @@
-import Link, { LinkProps } from 'next/link';
 import React, { AnchorHTMLAttributes, FC } from 'react';
 import classNames from 'classnames';
+import { Link } from 'src/i18n/navigation';
 
-type UILinkProps = LinkProps &
-  AnchorHTMLAttributes<HTMLAnchorElement> & {
-    text?: string;
-    disabled?: boolean;
-    children?: React.ReactNode;
-  };
+type UILinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+  href: string;
+  text?: string;
+  disabled?: boolean;
+  children?: React.ReactNode;
+};
 
 export const UILink: FC<UILinkProps> = ({ href, children, className, disabled, onClick, ...props }) => {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {

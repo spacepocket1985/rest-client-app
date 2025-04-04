@@ -3,11 +3,14 @@
 import { useAuth } from '@context/AuthContext';
 import { logout } from '@utils/firebase';
 import { RoutePaths } from 'src/constants/routePaths';
+import { LangSwitcher } from './LangSwitcher';
 import { UIButton } from '@ui/UIButton';
 import { UILink } from '@ui/UILink';
+import { useTranslations } from 'next-intl';
 
 export default function Header() {
   const { user, isLoading } = useAuth();
+  const t = useTranslations('Header');
 
   return (
     <header className="bg-gray-200 mb-4 p-5">
@@ -17,28 +20,28 @@ export default function Header() {
           href={RoutePaths.WELCOME}
         />
 
-        <div className="flex space-x-4">
-          <UIButton text={'Language Toggle'} />
+        <div className="flex space-x-4 items-center">
+          <LangSwitcher />
           {user ?
             <>
               <UIButton
-                text={'Log out'}
+                text={t('logout')}
                 onClick={logout}
                 disabled={!!isLoading}
               />
 
               <UILink
-                text={'Home'}
+                text={t('home')}
                 href={RoutePaths.WELCOME}
               />
             </>
           : <>
               <UILink
-                text={'Sign in'}
+                text={t('signIn')}
                 href={RoutePaths.SIGNIN}
               />
               <UILink
-                text={'Sign up'}
+                text={t('signUp')}
                 href={RoutePaths.SIGNUP}
               />
             </>

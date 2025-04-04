@@ -1,0 +1,12 @@
+{
+  "WelcomePage": {
+    "title": "REST-Client",
+    "welcome": "Welcome!"
+  },
+  "Header": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "logout": "Logout",
+    "home": "Home"
+  }
+}
