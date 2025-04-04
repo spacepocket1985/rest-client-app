@@ -12,6 +12,12 @@ const nextConfig = {
         port: '',
         pathname: '/static/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   distDir: './dist',
