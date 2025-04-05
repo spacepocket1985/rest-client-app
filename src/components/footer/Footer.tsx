@@ -1,12 +1,16 @@
+'use client';
+
+import { UILink } from '@ui/UILink';
+
 export default function Footer() {
   return (
     <footer className="mt-auto bg-gray-200 text-center p-6">
       <div className="flex space-x-4 justify-between w-full mx-auto items-center">
-        <a
-          href="https://github.com/spacepocket1985/rest-client-app"
+        <UILink
+          href={'https://github.com/spacepocket1985/rest-client-app'}
           target="_blank"
           rel="noreferrer"
-          className="group"
+          className="group bg-gray-200 hover:bg-gray-200 transition duration-200 cursor-pointer"
         >
           <svg
             className="w-14 h-14 fill-black group-hover:fill-gray-400 transition-colors"
@@ -14,13 +18,15 @@ export default function Footer() {
           >
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.38.6.1.82-.26.82-.58 0-.28-.01-1.02-.02-2-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.32-1.75-1.32-1.75-1.08-.74.08-.73.08-.73 1.2.08 1.84 1.23 1.84 1.23 1.06 1.81 2.78 1.29 3.46.99.11-.77.41-1.29.74-1.59-2.67-.3-5.47-1.34-5.47-5.97 0-1.32.47-2.4 1.23-3.24-.12-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.64.24 2.86.12 3.16.77.84 1.23 1.92 1.23 3.24 0 4.64-2.81 5.67-5.48 5.97.43.37.82 1.1.82 2.22 0 1.6-.02 2.88-.02 3.28 0 .32.22.7.83.58A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
           </svg>
-        </a>
+        </UILink>
+
         <p className="text-black">&copy; {new Date().getFullYear()}</p>
-        <a
-          href="https://rs.school/courses/reactjs"
+
+        <UILink
+          href={'https://rs.school/courses/reactjs'}
           target="_blank"
           rel="noreferrer"
-          className="group"
+          className="group bg-gray-200 hover:bg-gray-200 transition duration-200 cursor-pointer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +60,7 @@ export default function Footer() {
               </clipPath>
             </defs>
           </svg>
-        </a>
+        </UILink>
       </div>
     </footer>
   );
