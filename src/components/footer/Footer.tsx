@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="mt-auto bg-gray-200 text-center p-6">
-      <div className="flex space-x-4 justify-between max-w-[1024px] w-full mx-auto items-center">
+      <div className="flex space-x-4 justify-between w-full mx-auto items-center">
         <a
           href="https://github.com/spacepocket1985/rest-client-app"
           target="_blank"
