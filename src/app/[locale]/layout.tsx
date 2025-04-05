@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing';
 
 import './globals.css';
+import { ToastContainer } from 'react-toastify';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -35,6 +36,7 @@ export default async function LocaleLayout({
       <body className={inter.className}>
         <NextIntlClientProvider>
           <Providers>
+            <ToastContainer />
             <Header />
             <main className="flex flex-col items-center justify-self-center">{children}</main>
             <Footer />
