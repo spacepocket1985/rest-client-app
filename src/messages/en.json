@@ -1,14 +1,31 @@
 {
-  "WelcomePage": {
-    "title": "REST-Client",
-    "welcome": "Welcome!"
-  },
   "Header": {
     "signIn": "Sign in",
     "signUp": "Sign up",
     "logout": "Logout",
     "home": "Home"
   },
+
+  "WelcomePage": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "restClient": "Rest-client",
+    "history": "History",
+    "variables": "Variables",
+    "welcome": "Welcome!",
+    "welcomeBack": "Welcome back",
+    "appDescription": "This application is a lightweight platform for using and building APIs. It supports method selection, URL inputs, and headers. It was created by a team of students during the React course at RS School. Try it out!",
+    "rsTitle": "RS School React Course",
+    "rsDescription": "RS School is a free, community-driven online education program conducted by The Rolling Scopes Community since 2013. Over 500 developers from various countries and companies actively participate as mentors in the education process.",
+    "rsLink": "Visit RS School Website",
+    "devsTitle": "Developers",
+    "teamLead": "Team-lead, developer",
+    "developer": "Developer",
+    "dev1": "Aliaksandr Klintsevich",
+    "dev2": "Mykhailo Nikolaiev",
+    "dev3": "Oleksandr Mazghin"
+  },
+
   "SignUpForm": {
     "title": "Sign Up",
     "name": "Name",

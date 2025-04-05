@@ -15,10 +15,7 @@ export default function Header() {
   return (
     <header className="bg-gray-200 mb-4 p-5">
       <div className="flex justify-between items-center">
-        <UILink
-          text={'Logo'}
-          href={RoutePaths.WELCOME}
-        />
+        <UILink href={RoutePaths.WELCOME}>{'REST Client'}</UILink>
 
         <div className="flex space-x-4 items-center">
           <LangSwitcher />
