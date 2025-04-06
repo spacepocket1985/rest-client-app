@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useAuth } from '@context/AuthContext';
 import { logout } from '@utils/firebase';
 import { RoutePaths } from 'src/constants/routePaths';
@@ -12,8 +13,30 @@ export default function Header() {
   const { user, isLoading } = useAuth();
   const t = useTranslations('Header');
 
+  const [isScroll, setIsScroll] = useState(false);
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+
+    if (offset > 20) {
+      setIsScroll(true);
+    } else {
+      setIsScroll(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="bg-gray-200 mb-4 p-5">
+    <header
+      className={`mb-4 p-5 sticky top-0 z-150 transition-all duration-300 ${isScroll ? 'bg-gray-400' : 'bg-gray-200'}`}
+    >
       <div className="flex justify-between items-center">
         <UILink href={RoutePaths.WELCOME}>{'REST Client'}</UILink>
 
