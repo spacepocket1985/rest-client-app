@@ -5,6 +5,7 @@
     "logout": "Logout",
     "home": "Home"
   },
+
   "WelcomePage": {
     "signIn": "Sign in",
     "signUp": "Sign up",
@@ -23,5 +24,53 @@
     "dev1": "Aliaksandr Klintsevich",
     "dev2": "Mykhailo Nikolaiev",
     "dev3": "Oleksandr Mazghin"
+  },
+
+  "SignUpForm": {
+    "title": "Sign Up",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "submitButtonText": "Sign Up",
+    "common": {
+      "questionText": "Do you already have an account?",
+      "linkText": "Sign In"
+    },
+    "loading": "Registering...",
+    "successMessage": "You have successfully registered!",
+    "errorMessage": "An error occurred while registering."
+  },
+  "SignInForm": {
+    "title": "Sign In",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "submitButtonText": "Sign In",
+    "common": {
+      "questionText": "Don’t have an account?",
+      "linkText": "Register"
+    },
+    "loading": "Loading authentication...",
+    "successMessage": "You have successfully signed in!",
+    "errorMessage": "An error occurred while authentication."
+  },
+  "Validation": {
+    "validationNameRequired": "Name is required.",
+    "validationName2Characters": "Name must be at least 2 characters.",
+    "validationEmailRequired": "Email is required.",
+    "validationEmailInvalid": "Invalid email.",
+    "validationEmailInvalidOrDomain": "Invalid email format or missing domain.",
+    "validationEmailInvalidLocalToggle": "Invalid localToggle-part format.",
+    "validationPasswordRequired": "Password is required.",
+    "validationPasswordValidSetOfCharacters": "Password must only contain Latin symbols, digits, special characters adnd unicode symbols.",
+    "validationPasswordUpperCaseLetter": "Password must contain at least one uppercase letter.",
+    "validationPasswordLowerCaseLetter": "Password must contain at least one lowercase letter.",
+    "validationPasswordDigit": "Password must contain at least one digit.",
+    "validationPasswordSpecialChar": "Password must contain at least one special character.",
+    "validationPasswordWhitespace": "Password must not contain whitespace.",
+    "validationPasswordSize": "Must be at least 8 characters.",
+    "validationConfirmPasswordRequired": "Confirm Password is required.",
+    "validationConfirmPasswordDoestMatch": "Confirm Password does not match."
   }
 }

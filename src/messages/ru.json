@@ -23,5 +23,52 @@
     "dev1": "Александр Клинцевич",
     "dev2": "Михаил Николаев",
     "dev3": "Александр Мазгин"
+  },
+  "SignUpForm": {
+    "title": "Регистрация",
+    "name": "Имя",
+    "email": "Эл. почта",
+    "password": "Пароль",
+    "confirmPassword": "Подтвердите пароль",
+    "submitButtonText": "Регистрация",
+    "common": {
+      "questionText": "У вас уже есть аккаунт?",
+      "linkText": "Войти"
+    },
+    "loading": "Идет регистрация...",
+    "successMessage": "Вы успешно зарегистрировались!",
+    "errorMessage": "Произошла ошибка при регистрации."
+  },
+  "SignInForm": {
+    "title": "Войти",
+    "name": "Имя",
+    "email": "Эл. почта",
+    "password": "Пароль",
+    "submitButtonText": "Войти",
+    "common": {
+      "questionText": "У вас нет аккаунта?",
+      "linkText": "Регистрация"
+    },
+    "loading": "Загрузка аутентификации...",
+    "successMessage": "Вы успешно залогинились!",
+    "errorMessage": "Произошла ошибка аутентификации."
+  },
+  "Validation": {
+    "validationNameRequired": "Имя обязательно.",
+    "validationName2Characters": "Имя должно содержать не менее 2 символов.",
+    "validationEmailRequired": "Электронная почта обязателена.",
+    "validationEmailInvalid": "Неверный адрес электронной почты.",
+    "validationEmailInvalidOrDomain": "Неверный формат электронной почты или отсутствует домен.",
+    "validationEmailInvalidLocalToggle": "Неверный формат локального переключателя.",
+    "validationPasswordRequired": "Пароль обязателен.",
+    "validationPasswordValidSetOfCharacters": "Пароль должен содержать только латинские символы, цифры, специальные символы и символы Юникода.",
+    "validationPasswordUpperCaseLetter": "Пароль должен содержать хотя бы одну заглавную букву.",
+    "validationPasswordLowerCaseLetter": "Пароль должен содержать хотя бы одну строчную букву.",
+    "validationPasswordDigit": "Пароль должен содержать хотя бы одну цифру.",
+    "validationPasswordSpecialChar": "Пароль должен содержать хотя бы один специальный символ.",
+    "validationPasswordWhitespace": "Пароль не должен содержать пробелов.",
+    "validationPasswordSize": "Должно быть не менее 8 символов.",
+    "validationConfirmPasswordRequired": "Требуется подтверждение пароля.",
+    "validationConfirmPasswordDoestMatch": "Пароли не совпадает."
   }
 }
