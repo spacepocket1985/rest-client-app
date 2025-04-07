@@ -6,39 +6,92 @@ import ProtectedRoute, { AuthRequirement } from '@components/protectedRoute/Prot
 import { RoutePaths } from '@constants/routePaths';
 import { UILink } from '@ui/UILink';
 import { UIButton } from '@ui/UIButton';
+import { useEffect, useState } from 'react';
+
+interface IHistoryRequest {
+  metod: string;
+  url: string;
+  requestDate: string;
+}
 
 function History() {
   const t = useTranslations('WelcomePage');
+  const [history, setHistory] = useState<IHistoryRequest[]>([]);
 
-  const generateHistory = () => {
-    localStorage.setItem(
-      'history-requests',
-      JSON.stringify({
-        metod: 'GET',
-        url: 'testurlqwerty',
-      }),
-    );
+  useEffect(() => {
+    const historyFromLS = localStorage.getItem('history-requests');
+    if (historyFromLS != null && historyFromLS.length) setHistory(JSON.parse(historyFromLS));
+  }, []);
+
+  const addHistoryData = (data: Record<string, string>) => {
+    const key = 'history-requests';
+    const currentData = localStorage.getItem(key) || '';
+    const requestDate = Date.now();
+    const newData =
+      currentData.length ? [...JSON.parse(currentData), { ...data, requestDate }] : [{ ...data, requestDate }];
+    localStorage.setItem(key, JSON.stringify(newData));
+  };
+
+  const test = () => {
+    console.log(history, history.length);
+  };
+
+  const generateHistoryItem = () => {
+    addHistoryData({
+      metod: 'GET',
+      url: `'/test'${Math.random() * 100}`,
+    });
+    setHistory(JSON.parse(localStorage.getItem('history-requests')!));
   };
 
   const clearHistory = () => {
     localStorage.removeItem('history-requests');
+    setHistory([]);
   };
 
   return (
     <>
       <div className="flex flex-row mt-4 mb-4 gap-[10px] justify-center">
-        <UIButton onClick={generateHistory}>Genetare history</UIButton>
+        <UIButton onClick={generateHistoryItem}>Genetare request</UIButton>
         <UIButton onClick={clearHistory}>Clear history</UIButton>
+        <UIButton onClick={test}>Log history state</UIButton>
       </div>
 
       <h2 className="text-4xl mt-2 mb-2">{'History Requests'}</h2>
-      <p>{`You haven't executed any requests. It's empty here. Try:`}</p>
-      <UILink
-        href={RoutePaths.REST}
-        className="min-w-[120px] mt-4 mb-4"
-      >
-        {t('restClient')}
-      </UILink>
+
+      {history.length ?
+        <div className="flex flex-col gap-[10px] mb-[20px]">
+          {history
+            .slice()
+            .reverse()
+            .map((item) => {
+              return (
+                <UILink
+                  className="flex justify-between min-w-[50vw]"
+                  href={item.url}
+                  key={item.requestDate}
+                >
+                  <div>
+                    {item.metod} {item.url}
+                  </div>
+                  <div>
+                    {new Date(item.requestDate).toLocaleDateString()} {new Date(item.requestDate).toLocaleTimeString()}
+                  </div>
+                </UILink>
+              );
+            })}
+        </div>
+      : <>
+          {' '}
+          <p>{`You haven't executed any requests. It's empty here. Try:`}</p>
+          <UILink
+            href={RoutePaths.REST}
+            className="min-w-[120px] mt-4 mb-4"
+          >
+            {t('restClient')}
+          </UILink>
+        </>
+      }
     </>
   );
 }
