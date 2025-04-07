@@ -22,8 +22,8 @@ function History() {
   // TODO: Remove after REST client is implemented
   const generateHistoryItem = () => {
     addHistoryData({
-      metod: 'GET',
-      url: `'/test'${Math.random() * 100}`,
+      method: 'GET',
+      url: `test/${Math.random() * 100}`,
     });
     setHistory(JSON.parse(localStorage.getItem('history-requests')!));
   };
@@ -57,11 +57,11 @@ function History() {
               return (
                 <UILink
                   className="flex justify-between min-w-[50vw]"
-                  href={item.url}
+                  href={`${item.method}/${item.url}`}
                   key={item.requestDate}
                 >
                   <div>
-                    {item.metod} {item.url}
+                    {item.method} {item.url}
                   </div>
                   <div>
                     {new Date(item.requestDate).toLocaleDateString()} {new Date(item.requestDate).toLocaleTimeString()}

@@ -26,7 +26,7 @@ vi.mock('next/navigation', async () => {
 beforeEach(() => {
   localStorage.setItem(
     'history-requests',
-    JSON.stringify([{ metod: 'GET', url: '/test-url', requestDate: new Date().toISOString() }]),
+    JSON.stringify([{ method: 'GET', url: 'test-url', requestDate: new Date().toISOString() }]),
   );
 });
 
@@ -42,7 +42,7 @@ describe('History', () => {
     );
 
     expect(screen.getByText(`History Requests`)).toBeInTheDocument();
-    expect(screen.getByText('GET /test-url')).toBeInTheDocument();
+    expect(screen.getByText('GET test-url')).toBeInTheDocument();
 
     const btn = screen.getByText('Clear history');
 

@@ -1,5 +1,5 @@
 export interface IHistoryRequest {
-  metod: string;
+  method: string;
   url: string;
   requestDate: string;
 }
