@@ -15,9 +15,11 @@ function History() {
 
   useEffect(() => {
     const historyFromLS = localStorage.getItem('history-requests');
+
     if (historyFromLS != null && historyFromLS.length) setHistory(JSON.parse(historyFromLS));
   }, []);
 
+  // TODO: Remove after REST client is implemented
   const generateHistoryItem = () => {
     addHistoryData({
       metod: 'GET',
