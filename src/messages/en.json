@@ -72,5 +72,11 @@
     "validationPasswordSize": "Must be at least 8 characters.",
     "validationConfirmPasswordRequired": "Confirm Password is required.",
     "validationConfirmPasswordDoestMatch": "Confirm Password does not match."
+  },
+  "History": {
+    "title": "History Requests",
+    "clear": "Clear history",
+    "description": "You haven't executed any requests. It's empty here. Try:",
+    "restClient": "Rest-client"
   }
 }

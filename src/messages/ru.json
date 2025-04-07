@@ -70,5 +70,11 @@
     "validationPasswordSize": "Должно быть не менее 8 символов.",
     "validationConfirmPasswordRequired": "Требуется подтверждение пароля.",
     "validationConfirmPasswordDoestMatch": "Пароли не совпадает."
+  },
+  "History": {
+    "title": "История запросов",
+    "clear": "Очистить историю",
+    "description": "Вы не выполнили ни одного запроса. Здесь пусто. Попробуйте:",
+    "restClient": "Rest-клиент"
   }
 }

@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { addHistoryData, IHistoryRequest } from '@utils/history';
 
 function History() {
-  const t = useTranslations('WelcomePage');
+  const t = useTranslations('History');
   const [history, setHistory] = useState<IHistoryRequest[]>([]);
 
   useEffect(() => {
@@ -35,13 +35,21 @@ function History() {
 
   return (
     <>
-      <div className="flex flex-row mt-4 mb-4 gap-[10px] justify-center">
-        <UIButton onClick={generateHistoryItem}>Genetare request</UIButton>
-        <UIButton onClick={clearHistory}>Clear history</UIButton>
-      </div>
-      <h2 className="text-4xl mt-2 mb-2">{'History Requests'}</h2>
+      <h2 className="text-4xl mt-2 mb-2">{t('title')}</h2>
+      <UIButton
+        onClick={generateHistoryItem}
+        className="mt-4 mb-4"
+      >
+        Genetare request
+      </UIButton>
       {history.length ?
-        <div className="flex flex-col gap-[10px] mb-[20px]">
+        <div className="flex flex-col gap-[10px] items-center mb-[20px]">
+          <UIButton
+            onClick={clearHistory}
+            className="w-[150px]"
+          >
+            {t('clear')}
+          </UIButton>
           {history
             .slice()
             .reverse()
@@ -63,7 +71,7 @@ function History() {
             })}
         </div>
       : <>
-          <p>{`You haven't executed any requests. It's empty here. Try:`}</p>
+          <p>{t('description')}</p>
           <UILink
             href={RoutePaths.REST}
             className="min-w-[120px] mt-4 mb-4"
