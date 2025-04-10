@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import RestClient from '@components/rest/RestClient';
+import { decodeBase64, spaceInBase64 } from '@utils/base64';
 
 export const Method = {
   GET: 'GET',
@@ -18,7 +19,9 @@ interface RestPageProps {
     locale: string;
     slug: string[];
   };
-  searchParams?: Record<string, string>;
+  searchParams: {
+    [key: string]: string;
+  };
 }
 
 interface RequestParams {
@@ -44,7 +47,6 @@ export const makeRequest = async ({
     });
 
     const { status } = response;
-
     const result = response.ok ? await response.json() : null;
 
     return { result: JSON.stringify(result, null, 2), status };
@@ -55,25 +57,32 @@ export const makeRequest = async ({
   }
 };
 
-export default async function RestClientPage({ params }: RestPageProps) {
-  const [method = ''] = params.slug;
+export default async function RestClientPage({ params, searchParams }: RestPageProps) {
+  const { slug } = await params;
+  const method = slug[1] || Method.GET;
 
   if (!(method.toUpperCase() in Method)) {
     notFound();
   }
 
-  // const requestMethod = method.toUpperCase() as MethodType;
+  const endpoint = slug[2] && slug[2] !== spaceInBase64 ? decodeBase64(slug[2]) : '';
+  const resolvedSearchParams = await searchParams;
 
-  // const url = 'https://jsonplaceholder.typicode.com/posts/1';
-  // const body = {};
-  // const headers = { 'Content-Type': 'application/json' };
+  const headers: HeadersInit =
+    Object.keys(resolvedSearchParams).length > 0 ?
+      Object.fromEntries(Object.entries(resolvedSearchParams).map(([key, value]) => [key, value]))
+    : {};
 
-  // const response = await makeRequest({
-  //   method: requestMethod, // Pass the method here
-  //   url,
-  //   body,
-  //   headers,
-  // });
+  const body = slug[3] && slug[3] !== spaceInBase64 ? decodeBase64(slug[3]) : '';
 
-  return <RestClient />;
+  const requestMethod = method.toUpperCase() as MethodType;
+
+  const response = await makeRequest({
+    method: requestMethod,
+    url: endpoint,
+    body,
+    headers,
+  });
+
+  return <RestClient response={response} />; //
 }
