@@ -12,57 +12,59 @@ import { useTranslations } from 'next-intl';
 export default function Header() {
   const { user, isLoading } = useAuth();
   const t = useTranslations('Header');
-
-  const [isScroll, setIsScroll] = useState(false);
-
-  const handleScroll = () => {
-    const offset = window.scrollY;
-
-    if (offset > 20) {
-      setIsScroll(true);
-    } else {
-      setIsScroll(false);
-    }
-  };
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
     };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <header
-      className={`mb-4 p-5 sticky top-0 z-150 transition-all duration-300 ${isScroll ? 'bg-gray-400' : 'bg-gray-200'}`}
+      className={`
+      sticky top-0 z-50 w-full 
+      bg-gray-200 transition-all duration-300
+      ${isScrolled ? 'bg-gray-400 shadow-md' : ''}
+      py-4 px-6
+    `}
     >
-      <div className="flex justify-between items-center">
-        <UILink href={RoutePaths.WELCOME}>{'REST Client'}</UILink>
+      <div className="container mx-auto flex justify-between items-center">
+        <UILink
+          href={RoutePaths.WELCOME}
+          className="text-xl font-bold"
+        >
+          REST Client
+        </UILink>
 
-        <div className="flex space-x-4 items-center">
+        <div className="flex items-center gap-4">
           <LangSwitcher />
+
           {user ?
             <>
               <UIButton
                 text={t('logout')}
                 onClick={logout}
-                disabled={!!isLoading}
+                disabled={isLoading}
+                className="min-w-[100px]"
               />
-
               <UILink
-                text={t('home')}
                 href={RoutePaths.WELCOME}
+                text={t('home')}
               />
             </>
           : <>
               <UILink
-                text={t('signIn')}
                 href={RoutePaths.SIGNIN}
+                text={t('signIn')}
               />
               <UILink
-                text={t('signUp')}
                 href={RoutePaths.SIGNUP}
+                text={t('signUp')}
               />
             </>
           }

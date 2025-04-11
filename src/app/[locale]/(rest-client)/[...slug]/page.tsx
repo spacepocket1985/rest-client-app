@@ -84,5 +84,5 @@ export default async function RestClientPage({ params, searchParams }: RestPageP
     headers,
   });
 
-  return <RestClient response={response} />; //
+  return <RestClient response={response} />;
 }
