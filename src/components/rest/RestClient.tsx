@@ -7,6 +7,7 @@ import { encodeBase64, spaceInBase64, decodeBase64 } from '@utils/base64';
 import RestClientForm from './RestClientForm';
 import { MethodType } from '@app/[locale]/(rest-client)/[...slug]/page';
 import { notifyError } from '@utils/notify';
+import { addHistoryData } from '@utils/history';
 
 interface RestClientProps {
   response: {
@@ -111,6 +112,11 @@ function RestClient({ response }: RestClientProps) {
       const newUrl = queryParams.toString() ? `${newPath}?${queryParams.toString()}` : newPath;
 
       router.push(newUrl);
+      addHistoryData({
+        method: method.toUpperCase(),
+        url: url.trim(),
+        link: newUrl,
+      });
     } catch (error) {
       if (error instanceof Error) notifyError('Error executing request');
     } finally {

@@ -15,23 +15,29 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    const handleScroll = (): void => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll);
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return (): void => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
     <header
       className={`
-      sticky top-0 z-50 w-full 
-      bg-gray-200 transition-all duration-300
-      ${isScrolled ? 'bg-gray-400 shadow-md' : ''}
-      py-4 px-6
-    `}
+        sticky top-0 left-0 right-0 z-50 w-full 
+        bg-gray-200 transition-all duration-300
+        ${isScrolled ? 'bg-gray-400 shadow-md' : ''}
+        py-4 px-6
+      `}
     >
       <div className="container mx-auto flex justify-between items-center">
         <UILink

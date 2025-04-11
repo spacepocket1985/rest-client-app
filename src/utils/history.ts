@@ -1,15 +1,14 @@
 export interface IHistoryRequest {
   method: string;
   url: string;
-  requestDate: string;
+  link: string;
 }
 
-export const addHistoryData = (data: Record<string, string>) => {
+export const addHistoryData = (data: IHistoryRequest) => {
   const key = 'history-requests';
   const currentData = localStorage.getItem(key) || '';
-  const requestDate = Date.now();
-  const newData =
-    currentData.length ? [...JSON.parse(currentData), { ...data, requestDate }] : [{ ...data, requestDate }];
+
+  const newData = currentData.length ? [...JSON.parse(currentData), { ...data }] : [{ ...data }];
 
   localStorage.setItem(key, JSON.stringify(newData));
 };
