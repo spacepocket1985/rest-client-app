@@ -1,6 +1,7 @@
 'use client';
 
 import { UIButton } from '@ui/UIButton';
+import { UIHeader } from '@ui/UIHeader';
 
 interface RequestHeadersProps {
   headers: { key: string; value: string }[];
@@ -11,11 +12,12 @@ interface RequestHeadersProps {
 
 export default function RequestHeaders({ headers, onAdd, onRemove, onChange }: RequestHeadersProps) {
   return (
-    <div className="mb-4">
-      <h2 className="font-semibold mb-2">Headers:</h2>
+    <div className="mb-4 text-left">
+      <UIHeader text="Headers" />
+
       {headers.map((header, index) => (
         <div
-          className="flex mb-2 items-center"
+          className="flex mb-2 items-center gap-2"
           key={index}
         >
           <input
@@ -33,16 +35,16 @@ export default function RequestHeaders({ headers, onAdd, onRemove, onChange }: R
             placeholder="Header Value"
           />
           <UIButton
+            onClick={onAdd}
+            text="+"
+          />
+          <UIButton
             onClick={() => onRemove(index)}
             title="Remove header"
-            text="x"
+            text="-"
           />
         </div>
       ))}
-      <UIButton
-        onClick={onAdd}
-        text="Add Header"
-      />
     </div>
   );
 }

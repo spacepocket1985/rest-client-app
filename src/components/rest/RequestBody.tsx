@@ -1,5 +1,7 @@
 'use client';
 
+import { UIHeader } from '@ui/UIHeader';
+
 interface RequestBodyProps {
   value: string;
   onChange: (value: string) => void;
@@ -7,8 +9,8 @@ interface RequestBodyProps {
 
 export default function RequestBody({ value, onChange }: RequestBodyProps) {
   return (
-    <div className="mb-4">
-      <h2 className="font-semibold mb-2">Body:</h2>
+    <div className="mb-4 text-left">
+      <UIHeader text="Body" />
       <textarea
         className="border rounded p-2 w-full"
         rows={8}
