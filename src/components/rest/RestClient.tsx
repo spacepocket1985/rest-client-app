@@ -5,15 +5,12 @@ import { useRouter } from 'next/navigation';
 import ProtectedRoute, { AuthRequirement } from '@components/protectedRoute/ProtectedRoute';
 import { encodeBase64, spaceInBase64, decodeBase64 } from '@utils/base64';
 import RestClientForm from './RestClientForm';
-import { MethodType } from '@app/[locale]/(rest-client)/[...slug]/page';
 import { notifyError } from '@utils/notify';
 import { addHistoryData } from '@utils/history';
+import { ApiResponse, MethodType } from '@utils/makeRequest';
 
-interface RestClientProps {
-  response: {
-    result: string;
-    status: number;
-  };
+interface RestClientProps<T = unknown> {
+  response: ApiResponse<T>;
 }
 
 function RestClient({ response }: RestClientProps) {
@@ -130,7 +127,7 @@ function RestClient({ response }: RestClientProps) {
 
   return (
     <RestClientForm
-      initialMethod={initialData.method as MethodType}
+      initialMethod={response.method as MethodType}
       initialUrl={initialData.url}
       initialBody={initialData.body}
       initialHeaders={initialData.headers}

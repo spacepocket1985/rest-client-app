@@ -78,5 +78,34 @@
     "clear": "Clear history",
     "description": "You haven't executed any requests. It's empty here. Try:",
     "restClient": "Rest-client"
+  },
+  "Rest": {
+    "titles": {
+      "restClient": "REST Client",
+      "body": "Body",
+      "headers": "Headers",
+      "response": "Response",
+      "statusCode": "Status Code:",
+      "generatedCode": "Generate Code"
+    },
+    "placeholders": {
+      "url": "Endpoint URL",
+      "headerkey": "Header Key",
+      "headerValue": "Header Value"
+    },
+    "buttons": {
+      "sendRequest": "Send request",
+      "sending": "Sending...",
+      "prettyify": "Prettyify"
+    },
+    "messages": {
+      "respons": "Your response will be here",
+      "codeGenerationFailed": "codeGenerationFailed",
+      "noCodeGenerated": "No code generated",
+      "invalidJSON": "Invalid JSON:"
+    },
+    "select": {
+      "text": "text"
+    }
   }
 }

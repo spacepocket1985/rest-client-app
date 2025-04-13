@@ -1,21 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import RequestHeaders from './RequestHeaders';
 import RequestBody from './RequestBody';
 import ResponseView from './ResponseView';
-import { Method, MethodType } from '@app/[locale]/(rest-client)/[...slug]/page';
 import { Spinner } from '@components/spinner/Spinner';
+import { UIButton } from '@ui/UIButton';
+import { ApiResponse, Method, MethodType } from '@utils/makeRequest';
 
-interface RestClientFormProps {
+interface RestClientFormProps<T> {
   initialMethod?: MethodType;
   initialUrl?: string;
   initialBody?: string;
   initialHeaders?: { key: string; value: string }[];
-  response: {
-    result: string;
-    status: number;
-  };
+  response: ApiResponse<T>;
   onSubmit: (params: {
     method: MethodType;
     url: string;
@@ -25,31 +24,66 @@ interface RestClientFormProps {
   isLoading: boolean;
 }
 
-export default function RestClientForm({
+export default function RestClientForm<T>({
   initialMethod = 'GET',
   initialUrl = '',
-  initialBody = '',
+  initialBody = '{}',
   initialHeaders = [{ key: '', value: '' }],
   response,
   onSubmit,
   isLoading,
-}: RestClientFormProps) {
+}: RestClientFormProps<T>) {
   const [method, setMethod] = useState<MethodType>(initialMethod);
   const [url, setUrl] = useState(initialUrl);
   const [body, setBody] = useState(initialBody);
   const [headers, setHeaders] = useState(initialHeaders);
+  const [bodyMode, setBodyMode] = useState<'json' | 'text'>('json');
+
+  const t = useTranslations('Rest');
+
+  useEffect(() => {
+    const contentType = bodyMode === 'json' ? 'application/json' : 'text/plain';
+
+    const existingContentTypeIndex = headers.findIndex((h) => h.key.toLowerCase() === 'content-type');
+
+    const newHeaders = [...headers];
+
+    if (existingContentTypeIndex >= 0) {
+      newHeaders[existingContentTypeIndex] = {
+        key: 'Content-Type',
+        value: contentType,
+      };
+    } else if (method !== 'GET') {
+      newHeaders.push({
+        key: 'Content-Type',
+        value: contentType,
+      });
+    }
+
+    setHeaders(newHeaders);
+    // eslint-disable-next-line react-compiler/react-compiler
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bodyMode, method]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ method, url, body, headers });
+
+    const filteredHeaders = headers.filter((h) => h.key.trim() !== '');
+
+    onSubmit({
+      method,
+      url,
+      body,
+      headers: filteredHeaders,
+    });
   };
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">REST Client</h1>
+      <h1 className="text-2xl font-bold mb-4">{t('titles.restClient')}</h1>
 
       <form onSubmit={handleSubmit}>
-        <div className="flex mb-4">
+        <div className="flex mb-4 gap-2">
           <select
             className="border rounded p-2 mr-4"
             value={method}
@@ -67,18 +101,17 @@ export default function RestClientForm({
           <input
             type="text"
             className="border rounded p-2 flex-grow"
-            placeholder="Endpoint URL"
+            placeholder={t('placeholders.url')}
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             required
           />
-          <button
+          <UIButton
             type="submit"
             disabled={isLoading || !url.trim()}
-            className="ml-4 bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400"
           >
-            {isLoading ? 'Sending...' : 'Send Request'}
-          </button>
+            {isLoading ? t('buttons.sending') : t('buttons.sendRequest')}
+          </UIButton>
         </div>
 
         <RequestHeaders
@@ -97,11 +130,12 @@ export default function RestClientForm({
             setHeaders(newHeaders);
           }}
         />
-
         <RequestBody
           value={body}
           onChange={setBody}
+          onModeChange={setBodyMode}
         />
+
         <div>
           {isLoading && url ?
             <Spinner />
