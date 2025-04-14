@@ -8,6 +8,7 @@ import ResponseView from './ResponseView';
 import { Spinner } from '@components/spinner/Spinner';
 import { UIButton } from '@ui/UIButton';
 import { ApiResponse, Method, MethodType } from '@utils/makeRequest';
+import React from 'react';
 
 interface RestClientFormProps<T> {
   initialMethod?: MethodType;
@@ -15,23 +16,25 @@ interface RestClientFormProps<T> {
   initialBody?: string;
   initialHeaders?: { key: string; value: string }[];
   response: ApiResponse<T>;
-  onSubmit: (params: {
-    method: MethodType;
-    url: string;
-    body: string;
-    headers: { key: string; value: string }[];
-  }) => void;
+
   isLoading: boolean;
+  handleUrl: (
+    executRequest: boolean,
+    method?: string,
+    url?: string,
+    body?: string,
+    headers?: { key: string; value: string }[],
+  ) => Promise<void>;
 }
 
-export default function RestClientForm<T>({
+function RestClientForm<T>({
   initialMethod = 'GET',
   initialUrl = '',
   initialBody = '{}',
   initialHeaders = [{ key: '', value: '' }],
   response,
-  onSubmit,
   isLoading,
+  handleUrl,
 }: RestClientFormProps<T>) {
   const [method, setMethod] = useState<MethodType>(initialMethod);
   const [url, setUrl] = useState(initialUrl);
@@ -70,13 +73,14 @@ export default function RestClientForm<T>({
 
     const filteredHeaders = headers.filter((h) => h.key.trim() !== '');
 
-    onSubmit({
-      method,
-      url,
-      body,
-      headers: filteredHeaders,
-    });
+    handleUrl(true, method, url, body, filteredHeaders);
   };
+
+  useEffect(() => {
+    handleUrl(false, method, url, body, headers);
+  }, [method, url, body, headers, handleUrl]);
+
+  // const updateUrl = () => handleUrl(false, method, url, body, headers);
 
   return (
     <div className="container mx-auto p-6">
@@ -87,7 +91,10 @@ export default function RestClientForm<T>({
           <select
             className="border rounded p-2 mr-4"
             value={method}
-            onChange={(e) => setMethod(e.target.value as MethodType)}
+            onChange={(e) => {
+              setMethod(e.target.value as MethodType);
+              // updateUrl();
+            }}
           >
             {Object.values(Method).map((m) => (
               <option
@@ -104,6 +111,7 @@ export default function RestClientForm<T>({
             placeholder={t('placeholders.url')}
             value={url}
             onChange={(e) => setUrl(e.target.value)}
+            // onBlur={() => updateUrl()}
             required
           />
           <UIButton
@@ -128,6 +136,7 @@ export default function RestClientForm<T>({
 
             newHeaders[index] = { ...newHeaders[index], [type]: value };
             setHeaders(newHeaders);
+            // updateUrl();
           }}
         />
         <RequestBody
@@ -147,3 +156,5 @@ export default function RestClientForm<T>({
     </div>
   );
 }
+
+export default React.memo(RestClientForm);

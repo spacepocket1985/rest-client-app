@@ -14,7 +14,7 @@ interface RestPageProps {
 }
 
 export default async function RestClientPage({ params, searchParams }: RestPageProps) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const method = slug[1] || Method.GET;
 
   if (!(method.toUpperCase() in Method)) {
@@ -40,5 +40,10 @@ export default async function RestClientPage({ params, searchParams }: RestPageP
     headers,
   });
 
-  return <RestClient response={response} />;
+  return (
+    <RestClient
+      response={response}
+      locale={locale}
+    />
+  );
 }

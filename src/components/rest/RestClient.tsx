@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import ProtectedRoute, { AuthRequirement } from '@components/protectedRoute/ProtectedRoute';
 import { encodeBase64, spaceInBase64, decodeBase64 } from '@utils/base64';
@@ -11,9 +11,10 @@ import { ApiResponse, MethodType } from '@utils/makeRequest';
 
 interface RestClientProps<T = unknown> {
   response: ApiResponse<T>;
+  locale: string;
 }
 
-function RestClient({ response }: RestClientProps) {
+function RestClient({ response, locale }: RestClientProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [initialData, setInitialData] = useState<{
@@ -77,49 +78,53 @@ function RestClient({ response }: RestClientProps) {
     });
   }, []);
 
-  const executeRequest = async ({
-    method,
-    url,
-    body,
-    headers,
-  }: {
-    method: string;
-    url: string;
-    body: string;
-    headers: { key: string; value: string }[];
-  }) => {
-    if (!url.trim()) return;
+  const handleUrl = useCallback(
+    async (
+      executRequest: boolean,
+      method?: string,
+      url?: string,
+      body?: string,
+      headers?: { key: string; value: string }[],
+    ) => {
+      const normalizedMethod = method?.trim() || 'GET';
+      const normalizedUrl = url?.trim() || '';
+      const normalizedBody = body?.trim() || '';
+      const normalizedHeaders = headers?.filter(({ key }) => key?.trim()) || [{ key: '', value: '' }];
 
-    setIsLoading(true);
+      setIsLoading(true);
 
-    try {
-      const encodedUrl = url.trim() ? encodeBase64(url.trim()) : '';
-      const encodedBody = body.trim() ? encodeBase64(body.trim()) : '';
+      try {
+        const encodedUrl = normalizedUrl ? encodeBase64(normalizedUrl) + '/' : '';
+        const encodedBody = normalizedBody ? encodeBase64(normalizedBody) : '';
 
-      const queryParams = new URLSearchParams();
+        const queryParams = new URLSearchParams();
 
-      headers.forEach(({ key, value }) => {
-        if (key.trim()) {
-          queryParams.append(key.trim(), value.trim());
-        }
-      });
+        normalizedHeaders.forEach(({ key, value }) => {
+          if (key.trim()) {
+            queryParams.append(key.trim(), value.trim());
+          }
+        });
 
-      const basePath = '/rest-client';
-      const newPath = `${basePath}/${method.toLowerCase()}/${encodedUrl}/${encodedBody}`;
-      const newUrl = queryParams.toString() ? `${newPath}?${queryParams.toString()}` : newPath;
+        const basePath = `/${locale}/rest-client`;
+        const newPath = `${basePath}/${normalizedMethod.toUpperCase()}/${encodedUrl}${encodedBody}`;
+        const newUrl = queryParams.toString() ? `${newPath}?${queryParams.toString()}` : newPath;
 
-      router.push(newUrl);
-      addHistoryData({
-        method: method.toUpperCase(),
-        url: url.trim(),
-        link: newUrl,
-      });
-    } catch (error) {
-      if (error instanceof Error) notifyError('Error executing request');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        if (executRequest) {
+          router.push(newUrl);
+          addHistoryData({
+            method: normalizedMethod.toUpperCase(),
+            url: normalizedUrl,
+            link: newUrl,
+          });
+        } else window.history.replaceState(null, '', newUrl);
+      } catch (error) {
+        if (error instanceof Error) notifyError('Error executing request');
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [locale, router],
+  );
 
   if (!initialData) {
     return <div className="container mx-auto p-6">Loading...</div>;
@@ -132,8 +137,8 @@ function RestClient({ response }: RestClientProps) {
       initialBody={initialData.body}
       initialHeaders={initialData.headers}
       response={response}
-      onSubmit={executeRequest}
       isLoading={isLoading}
+      handleUrl={handleUrl}
     />
   );
 }
