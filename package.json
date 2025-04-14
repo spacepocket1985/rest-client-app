@@ -24,6 +24,8 @@
     "next": "^15.1.7",
     "next-intl": "^4.0.2",
     "postcss": "^8.5.3",
+    "postman-code-generators": "^2.0.0",
+    "postman-collection": "^5.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-firebase-hooks": "^5.1.1",

@@ -9,6 +9,7 @@ import { Spinner } from '@components/spinner/Spinner';
 import { UIButton } from '@ui/UIButton';
 import { ApiResponse, Method, MethodType } from '@utils/makeRequest';
 import React from 'react';
+import CodeGenerator from './CodeGenerator';
 
 interface RestClientFormProps<T> {
   initialMethod?: MethodType;
@@ -80,8 +81,6 @@ function RestClientForm<T>({
     handleUrl(false, method, url, body, headers);
   }, [method, url, body, headers, handleUrl]);
 
-  // const updateUrl = () => handleUrl(false, method, url, body, headers);
-
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">{t('titles.restClient')}</h1>
@@ -93,7 +92,6 @@ function RestClientForm<T>({
             value={method}
             onChange={(e) => {
               setMethod(e.target.value as MethodType);
-              // updateUrl();
             }}
           >
             {Object.values(Method).map((m) => (
@@ -111,7 +109,6 @@ function RestClientForm<T>({
             placeholder={t('placeholders.url')}
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            // onBlur={() => updateUrl()}
             required
           />
           <UIButton
@@ -153,6 +150,13 @@ function RestClientForm<T>({
           : null}
         </div>
       </form>
+      <CodeGenerator
+        method={method}
+        url={url}
+        headers={headers}
+        body={body}
+        bodyMode={bodyMode}
+      />
     </div>
   );
 }

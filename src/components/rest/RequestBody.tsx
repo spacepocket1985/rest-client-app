@@ -2,8 +2,6 @@
 
 import { useTranslations } from 'next-intl';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
-import { lintGutter, linter } from '@codemirror/lint';
-import { jsonParseLinter } from '@codemirror/lang-json';
 import { json } from '@codemirror/lang-json';
 import { UIHeader } from '@ui/UIHeader';
 import { UIButton } from '@ui/UIButton';
@@ -21,7 +19,7 @@ interface RequestBodyProps {
 
 export default function RequestBody({ value, onChange, mode = 'json', onModeChange }: RequestBodyProps) {
   const [editorMode, setEditorMode] = useState<EditorModeType>(mode);
-  const extensions = editorMode === 'json' ? [json(), linter(jsonParseLinter()), lintGutter()] : [];
+  const extensions = editorMode === 'json' ? [json()] : [];
 
   const t = useTranslations('Rest');
 
