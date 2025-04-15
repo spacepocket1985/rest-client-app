@@ -107,5 +107,18 @@
     "select": {
       "text": "text"
     }
+  },
+  "PostamnCodeGen": {
+    "title": "Generated Request Code",
+    "selectLang": "Language:",
+    "genCode": "Generating code..",
+    "copy": "copy",
+
+    "messages": {
+      "requiredURLAndMethod": "URL and method are required to generate code",
+      "failedGenerate": "Failed to generate code",
+      "errorCreatingRequest": "Error creating request",
+      "selecatLangTogenerate": "Select a language to generate code"
+    }
   }
 }

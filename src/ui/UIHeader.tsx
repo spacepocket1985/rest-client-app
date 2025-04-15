@@ -7,7 +7,7 @@ export const UIHeader: React.FC<UIHeader> = ({ className, text }) => {
     <h2
       className={
         className ? className : (
-          'font-semibold mb-2 py-2 px-10 text-white bg-purple-800 rounded-md inline-block min-w-40 text-center'
+          'font-semibold mb-2 py-2 px-10 text-white bg-purple-800 rounded-md inline-block text-center'
         )
       }
     >

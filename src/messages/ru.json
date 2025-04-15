@@ -103,5 +103,18 @@
     "select": {
       "text": "Текст"
     }
+  },
+  "PostamnCodeGen": {
+    "title": "Сгенерированный код запроса",
+    "selectLang": "Язык: ",
+    "genCode": "Создане кода",
+    "copy": "скопировать",
+
+    "messages": {
+      "requiredURLAnd method": "URL и метод обязательны для генерации кода",
+      "failedGenerate": "Ошибка генерации кода",
+      "errorCreatingRequest": "Ошибка при создании запроса, подробнее ->",
+      "selecatLangTogenerate": "Выберите язык для генерации кода"
+    }
   }
 }
