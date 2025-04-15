@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Request } from 'postman-collection';
 import * as postmanCodegen from 'postman-code-generators';
 import { UIHeader } from '@ui/UIHeader';
+import { UIButton } from '@ui/UIButton';
 
 interface CodeGeneratorProps {
   method: string;
@@ -16,20 +17,21 @@ interface CodeGeneratorProps {
 }
 
 type SupportedLanguage = {
+  id: string;
   key: string;
   name: string;
   variant: string;
 };
 
 const SUPPORTED_LANGUAGES: SupportedLanguage[] = [
-  { key: 'curl', name: 'cURL', variant: 'curl' },
-  { key: 'javascript', name: 'JavaScript (Fetch)', variant: 'fetch' },
-  { key: 'javascript-xhr', name: 'JavaScript (XHR)', variant: 'xhr' },
-  { key: 'nodejs', name: 'Node.js', variant: 'native' },
-  { key: 'python', name: 'Python', variant: 'requests' },
-  { key: 'java', name: 'Java', variant: 'okhttp' },
-  { key: 'csharp', name: 'C#', variant: 'restsharp' },
-  { key: 'go', name: 'Go', variant: 'native' },
+  { id: 'curl', key: 'curl', name: 'cURL', variant: 'curl' },
+  { id: 'js-fetch', key: 'javascript', name: 'JavaScript (Fetch)', variant: 'fetch' },
+  { id: 'js-xhr', key: 'javascript', name: 'JavaScript (XHR)', variant: 'xhr' },
+  { id: 'nodejs', key: 'nodejs', name: 'Node.js', variant: 'native' },
+  { id: 'python', key: 'python', name: 'Python', variant: 'requests' },
+  { id: 'java', key: 'java', name: 'Java', variant: 'okhttp' },
+  { id: 'csharp', key: 'csharp', name: 'C#', variant: 'restsharp' },
+  { id: 'go', key: 'go', name: 'Go', variant: 'native' },
 ];
 
 const DEFAULT_OPTIONS: postmanCodegen.ConvertOptions = {
@@ -43,7 +45,7 @@ const DEFAULT_OPTIONS: postmanCodegen.ConvertOptions = {
 
 const CodeGenerator: React.FC<CodeGeneratorProps> = ({ method, url, headers, body, bodyMode }) => {
   const [generatedCode, setGeneratedCode] = useState<string>('');
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('curl');
+  const [selectedLanguageId, setSelectedLanguageId] = useState<string>('curl');
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -78,19 +80,20 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ method, url, headers, bod
         url,
         method,
         header: filteredHeaders.map((h) => ({ key: h.key, value: h.value })),
-        body: requestBody,
+        ...(method.toUpperCase() !== 'GET' && { body: requestBody }),
       });
 
-      const languageConfig = SUPPORTED_LANGUAGES.find((lang) => lang.key === selectedLanguage);
+      const languageConfig = SUPPORTED_LANGUAGES.find((lang) => lang.id === selectedLanguageId);
 
       if (!languageConfig) {
         return;
       }
 
-      postmanCodegen.convert(selectedLanguage, languageConfig.variant, request, DEFAULT_OPTIONS, (err, snippet) => {
+      postmanCodegen.convert(languageConfig.key, languageConfig.variant, request, DEFAULT_OPTIONS, (err, snippet) => {
         setIsGenerating(false);
         if (err) {
           setError(t(`messages.failedGenerate`));
+          console.error('Code generation error:', err);
         } else {
           setGeneratedCode(snippet || '');
         }
@@ -106,7 +109,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ method, url, headers, bod
       generateCode();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [method, url, headers, body, bodyMode, selectedLanguage]);
+  }, [method, url, headers, body, bodyMode, selectedLanguageId]);
 
   return (
     <>
@@ -117,13 +120,13 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ method, url, headers, bod
           <select
             id="language-select"
             className="border rounded p-2 w-full"
-            value={selectedLanguage}
-            onChange={(e) => setSelectedLanguage(e.target.value)}
+            value={selectedLanguageId}
+            onChange={(e) => setSelectedLanguageId(e.target.value)}
           >
             {SUPPORTED_LANGUAGES.map((lang) => (
               <option
-                key={lang.key}
-                value={lang.key}
+                key={lang.id}
+                value={lang.id}
               >
                 {lang.name}
               </option>
@@ -145,13 +148,13 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ method, url, headers, bod
               <code>{generatedCode || t('messages.selecatLangTogenerate')}</code>
             </pre>
             {generatedCode && (
-              <button
+              <UIButton
+                className="absolute top-1 right-1 p-1 rounded"
                 onClick={() => navigator.clipboard.writeText(generatedCode)}
-                className="absolute  p-3 top-2 right-2 bg-gray-200 hover:bg-gray-300 p-1 rounded"
                 title="Copy to clipboard"
               >
                 {t('copy')}
-              </button>
+              </UIButton>
             )}
           </div>
         }
