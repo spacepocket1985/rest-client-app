@@ -33,7 +33,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body className={inter.className}>
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
         <NextIntlClientProvider>
           <Providers>
             <ToastContainer />

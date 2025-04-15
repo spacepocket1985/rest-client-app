@@ -76,5 +76,45 @@
     "clear": "Очистить историю",
     "description": "Вы не выполнили ни одного запроса. Здесь пусто. Попробуйте:",
     "restClient": "Rest-клиент"
+  },
+  "Rest": {
+    "titles": {
+      "restClient": "REST Клиент",
+      "body": "Тело",
+      "headers": "Заголовки",
+      "response": "Ответ",
+      "statusCode": "Код состояния:"
+    },
+    "placeholders": {
+      "url": "URL конечной точки",
+      "headerkey": "Ключ заголовка",
+      "headerValue": "Значение заголовка"
+    },
+    "buttons": {
+      "sendRequest": "Отправить запрос",
+      "sending": "Отправка...",
+      "prettyify": "Форматировать"
+    },
+
+    "messages": {
+      "respons": "Ваш ответ будет здесь",
+      "invalidJSON": "Не верный JSON:"
+    },
+    "select": {
+      "text": "Текст"
+    }
+  },
+  "PostamnCodeGen": {
+    "title": "Сгенерированный код запроса",
+    "selectLang": "Язык: ",
+    "genCode": "Создане кода",
+    "copy": "скопировать",
+
+    "messages": {
+      "requiredURLAnd method": "URL и метод обязательны для генерации кода",
+      "failedGenerate": "Ошибка генерации кода",
+      "errorCreatingRequest": "Ошибка при создании запроса, подробнее ->",
+      "selecatLangTogenerate": "Выберите язык для генерации кода"
+    }
   }
 }

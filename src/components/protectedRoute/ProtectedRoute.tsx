@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, PropsWithChildren, useState } from 'react';
+import { useEffect, ComponentType, useState } from 'react';
 import { Spinner } from '../spinner/Spinner';
 import { useAuth } from '@context/AuthContext';
 import { RoutePaths } from '@constants/routePaths';
@@ -11,8 +11,8 @@ export enum AuthRequirement {
   WithoutAuth,
 }
 
-const ProtectedRoute = (Component: (props: PropsWithChildren) => JSX.Element, authRequirement: AuthRequirement) => {
-  const WrappedComponent: React.FC = (props: PropsWithChildren) => {
+const ProtectedRoute = <P extends object>(Component: ComponentType<P>, authRequirement: AuthRequirement) => {
+  const WrappedComponent: React.FC<P> = (props) => {
     const [isAuth, setIsAuth] = useState(false);
 
     const { user } = useAuth();
@@ -29,6 +29,7 @@ const ProtectedRoute = (Component: (props: PropsWithChildren) => JSX.Element, au
         router.push(RoutePaths.WELCOME);
       }
     }, [user, router]);
+
     if (isAuth) return <Component {...props} />;
 
     return <Spinner />;

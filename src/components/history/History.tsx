@@ -4,10 +4,12 @@ import { useTranslations } from 'next-intl';
 
 import ProtectedRoute, { AuthRequirement } from '@components/protectedRoute/ProtectedRoute';
 import { RoutePaths } from '@constants/routePaths';
+import Link from 'next/link';
 import { UILink } from '@ui/UILink';
 import { UIButton } from '@ui/UIButton';
 import { useEffect, useState } from 'react';
-import { addHistoryData, IHistoryRequest } from '@utils/history';
+import { IHistoryRequest } from '@utils/history';
+import { UIHeader } from '@ui/UIHeader';
 
 function History() {
   const t = useTranslations('History');
@@ -19,15 +21,6 @@ function History() {
     if (historyFromLS != null && historyFromLS.length) setHistory(JSON.parse(historyFromLS));
   }, []);
 
-  // TODO: Remove after REST client is implemented
-  const generateHistoryItem = () => {
-    addHistoryData({
-      method: 'GET',
-      url: `test/${Math.random() * 100}`,
-    });
-    setHistory(JSON.parse(localStorage.getItem('history-requests')!));
-  };
-
   const clearHistory = () => {
     localStorage.removeItem('history-requests');
     setHistory([]);
@@ -36,14 +29,9 @@ function History() {
   return (
     <>
       <h2 className="text-4xl mt-2 mb-2">{t('title')}</h2>
-      <UIButton
-        onClick={generateHistoryItem}
-        className="mt-4 mb-4"
-      >
-        Genetare request
-      </UIButton>
+
       {history.length ?
-        <div className="flex flex-col gap-[10px] items-center mb-[20px]">
+        <div className="flex flex-col gap-[10px] items-start mb-[20px] mt-[10px]">
           <UIButton
             onClick={clearHistory}
             className="w-[150px]"
@@ -53,20 +41,16 @@ function History() {
           {history
             .slice()
             .reverse()
-            .map((item) => {
+            .map((item, index) => {
               return (
-                <UILink
-                  className="flex justify-between min-w-[50vw]"
-                  href={`${item.method}/${item.url}`}
-                  key={item.requestDate}
+                <Link
+                  className="flex items-center gap-4"
+                  href={item.link}
+                  key={index}
                 >
-                  <div>
-                    {item.method} {item.url}
-                  </div>
-                  <div>
-                    {new Date(item.requestDate).toLocaleDateString()} {new Date(item.requestDate).toLocaleTimeString()}
-                  </div>
-                </UILink>
+                  <UIHeader text={item.method} />
+                  <UIHeader text={item.url} />
+                </Link>
               );
             })}
         </div>

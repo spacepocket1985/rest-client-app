@@ -7,17 +7,14 @@
 }
 
 html {
-  font-size: 10px;
   text-align: center;
-}
+  font-size: 10px;
 
-html,
-body {
-  height: 100%;
 }
 
 body {
+  font-size: 1.4rem;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-size: 1.4rem;
 }
