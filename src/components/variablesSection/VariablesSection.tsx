@@ -3,6 +3,7 @@
 import ProtectedRoute, { AuthRequirement } from '@components/protectedRoute/ProtectedRoute';
 import { UIButton } from '@ui/UIButton';
 import { useEffect, useState } from 'react';
+import { VariableRow } from './VariableRow';
 
 function VariablesSection() {
   const [variables, setVariables] = useState<{ key: string; value: string }[]>(() => {
@@ -24,6 +25,15 @@ function VariablesSection() {
 
   const handleAddVariable = () => {
     if (!newVariable.trim()) return;
+
+    const keyExists = variables.some((v) => v.key === newVariable);
+
+    if (keyExists) {
+      alert('Variable key already exists. Please choose a unique name.');
+
+      return;
+    }
+
     setVariables((prev) => [...prev, { key: newVariable, value: newValue }]);
     setNewVariable('');
     setNewValue('');
@@ -56,23 +66,27 @@ function VariablesSection() {
         />
         <UIButton
           onClick={handleAddVariable}
-          text="save"
+          text="Add Variable"
         />
       </div>
-      {variables.map((v, idx) => (
-        <div
-          key={idx}
-          className="flex items-center gap-2 w-[600px] mb-1"
-        >
-          <span className="w-[200px] p-2 border rounded">{v.key}</span>
-          <span className="w-[200px] p-2 border rounded">{v.value}</span>
-          <UIButton
-            text="Delete"
-            onClick={() => {
-              setVariables(variables.filter((_, i) => i !== idx));
-            }}
-          />
-        </div>
+      {variables.map((v) => (
+        <VariableRow
+          key={v.key}
+          variable={v}
+          variables={variables}
+          onUpdate={(originalKey, updated) => {
+            if (originalKey !== updated.key && variables.some((v) => v.key === updated.key)) {
+              alert('A variable with this key already exists.');
+
+              return;
+            }
+
+            setVariables((prev) => prev.map((item) => (item.key === originalKey ? updated : item)));
+          }}
+          onDelete={(key) => {
+            setVariables((prev) => prev.filter((item) => item.key !== key));
+          }}
+        />
       ))}
     </>
   );
