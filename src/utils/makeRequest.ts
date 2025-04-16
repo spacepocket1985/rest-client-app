@@ -17,14 +17,14 @@ interface RequestParams {
   headers?: HeadersInit;
 }
 
-type SuccessResponse<T = unknown> = {
+export type SuccessResponse<T = unknown> = {
   status: number;
   result: T;
   error?: never;
   method: MethodType;
 };
 
-type ErrorResponse = {
+export type ErrorResponse = {
   status: number;
   result?: never;
   error: string;
