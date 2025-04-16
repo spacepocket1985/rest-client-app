@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { UIButton } from '@ui/UIButton';
 
+import { useTranslations } from 'next-intl';
+
 interface VariableRowProps {
   variable: { key: string; value: string };
   variables: { key: string; value: string }[];
@@ -9,6 +11,8 @@ interface VariableRowProps {
 }
 
 export function VariableRow({ variable, variables, onUpdate, onDelete }: VariableRowProps) {
+  const t = useTranslations('VariablesSection');
+
   const [editedKey, setEditedKey] = useState(variable.key);
   const [editedValue, setEditedValue] = useState(variable.value);
 
@@ -30,12 +34,12 @@ export function VariableRow({ variable, variables, onUpdate, onDelete }: Variabl
         onChange={(e) => setEditedValue(e.target.value)}
       />
       <UIButton
-        text="Update"
+        text={t('update')}
         disabled={!isChanged || keyConflict}
         onClick={() => onUpdate(variable.key, { key: editedKey, value: editedValue })}
       />
       <UIButton
-        text="Delete"
+        text={t('delete')}
         onClick={() => onDelete(variable.key)}
       />
     </div>

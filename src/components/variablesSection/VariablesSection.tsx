@@ -4,8 +4,11 @@ import ProtectedRoute, { AuthRequirement } from '@components/protectedRoute/Prot
 import { UIButton } from '@ui/UIButton';
 import { useEffect, useState } from 'react';
 import { VariableRow } from './VariableRow';
+import { useTranslations } from 'next-intl';
 
 function VariablesSection() {
+  const t = useTranslations('VariablesSection');
+
   const [variables, setVariables] = useState<{ key: string; value: string }[]>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('rest-client-vars');
@@ -18,6 +21,7 @@ function VariablesSection() {
 
   const [newVariable, setNewVariable] = useState('');
   const [newValue, setNewValue] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     localStorage.setItem('rest-client-vars', JSON.stringify(variables));
@@ -29,7 +33,7 @@ function VariablesSection() {
     const keyExists = variables.some((v) => v.key === newVariable);
 
     if (keyExists) {
-      alert('Variable key already exists. Please choose a unique name.');
+      setError(t('errorDuplicate'));
 
       return;
     }
@@ -37,38 +41,46 @@ function VariablesSection() {
     setVariables((prev) => [...prev, { key: newVariable, value: newValue }]);
     setNewVariable('');
     setNewValue('');
+    setError('');
   };
 
   return (
     <>
-      <h2 className="text-4xl mt-2 mb-2">{`Variables`}</h2>
+      <h2 className="text-4xl mt-2 mb-2">{t('title')}</h2>
+
       <div className="flex flex-col">
         <div className="flex mb-2 justify-start gap-2 w-[600px]">
-          {' '}
-          <span className="w-[200px] text-start p-2 mr-2">Variable</span>
-          <span className="w-[200px] text-start p-2 mr-2">Value</span>
+          <span className="w-[200px] text-start p-2 mr-2">{t('variable')}</span>
+          <span className="w-[200px] text-start p-2 mr-2">{t('value')}</span>
         </div>
       </div>
+
       <div className="flex mb-2 items-center gap-2 w-[600px]">
         <input
           type="text"
-          className="border rounded p-2 mr-2 w-[200px]"
+          className={`border rounded p-2 mr-2 w-[200px] ${error ? 'border-red-500' : ''}`}
           value={newVariable}
-          onChange={(e) => setNewVariable(e.target.value)}
-          placeholder={`Variable name`}
+          onChange={(e) => {
+            setNewVariable(e.target.value);
+            setError('');
+          }}
+          placeholder={t('namePlaceholder')}
         />
         <input
           type="text"
           className="border rounded p-2 mr-2 w-[200px]"
           value={newValue}
           onChange={(e) => setNewValue(e.target.value)}
-          placeholder={`Variable value`}
+          placeholder={t('valuePlaceholder')}
         />
         <UIButton
           onClick={handleAddVariable}
-          text="Add Variable"
+          text={t('addButton')}
         />
       </div>
+
+      {error && <div className="text-red-500 text-xl mb-4 ml-1">{error}</div>}
+
       {variables.map((v) => (
         <VariableRow
           key={v.key}
@@ -76,7 +88,7 @@ function VariablesSection() {
           variables={variables}
           onUpdate={(originalKey, updated) => {
             if (originalKey !== updated.key && variables.some((v) => v.key === updated.key)) {
-              alert('A variable with this key already exists.');
+              alert(t('errorDuplicate'));
 
               return;
             }
