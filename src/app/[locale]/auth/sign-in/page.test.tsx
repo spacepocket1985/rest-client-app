@@ -15,6 +15,12 @@ vi.mock('next/navigation', async () => {
     ...actual,
     useRouter: () => ({
       push: mockPush,
+      prefetch: vi.fn(),
+      replace: vi.fn(),
+      back: vi.fn(),
+      pathname: '/',
+      query: {},
+      asPath: '/',
     }),
   };
 });
@@ -51,28 +57,31 @@ describe('SignInPage', () => {
     fireEvent.click(registerLink);
   });
 
-  // it('should enable submit button when form is valid', async () => {
-  //   renderPage();
+  it('should enable submit button when form is valid', async () => {
+    renderPage();
 
-  //   await waitFor(() => {
-  //     act(() => {
-  //       fireEvent.change(screen.getByPlaceholderText('Email'), {
-  //         target: { value: 'test@example.com' },
-  //       });
-  //       fireEvent.change(screen.getByPlaceholderText('Password'), {
-  //         target: { value: 'password123' },
-  //       });
-  //     });
-  //   });
+    await waitFor(() => {
+      act(() => {
+        fireEvent.change(screen.getByPlaceholderText('Email'), {
+          target: { value: 'test@example.com' },
+        });
+        fireEvent.change(screen.getByPlaceholderText('Password'), {
+          target: { value: 'password123' },
+        });
+      });
+    });
 
-  //   act(() => {
-  //     fireEvent.click(screen.getByRole('button'));
-  //   });
+    act(() => {
+      const buttons = screen.getAllByRole('button');
+      const submitBtn = buttons[1];
 
-  //   await waitFor(() => {
-  //     expect(spy).toHaveBeenCalled();
-  //     expect(spy).toHaveBeenCalledWith('test@example.com', 'password123');
-  //     expect(spy).toHaveBeenCalledTimes(1);
-  //   });
-  // });
+      fireEvent.click(submitBtn);
+    });
+
+    await waitFor(() => {
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith('test@example.com', 'password123');
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+  });
 });
