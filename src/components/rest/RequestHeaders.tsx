@@ -5,6 +5,7 @@ import { UIButton } from '@ui/UIButton';
 import { UIHeader } from '@ui/UIHeader';
 import { useRef, useState } from 'react';
 import { useDropdown } from '@utils/variables';
+import DropdownList from './DropdownList';
 
 interface RequestHeadersProps {
   headers: { key: string; value: string }[];
@@ -98,36 +99,25 @@ export default function RequestHeaders({ headers, onAdd, onRemove, onChange, var
           />
         </div>
       ))}
+      {focusedHeader && (
+        <DropdownList
+          showDropdown={showDropdown}
+          dropdownPosition={dropdownPosition}
+          options={variables}
+          onSelect={(key) => {
+            const inputEl = inputRefs.current[focusedHeader.index]?.[focusedHeader.field];
 
-      {showDropdown && focusedHeader && (
-        <ul
-          className="fixed z-10 bg-white border rounded shadow-md max-h-60 overflow-auto"
-          style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
-        >
-          {variables.map(({ key }) => (
-            <li
-              key={key}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-              onMouseDown={(e) => {
-                e.preventDefault();
+            if (!inputEl) return;
 
-                const inputEl = inputRefs.current[focusedHeader.index]?.[focusedHeader.field];
+            const pos = inputEl.selectionStart ?? inputEl.value.length;
+            const before = inputEl.value.slice(0, pos - 1);
+            const after = inputEl.value.slice(pos);
+            const newVal = `${before}{{${key}}}${after}`;
 
-                if (!inputEl) return;
-
-                const pos = inputEl.selectionStart ?? inputEl.value.length;
-                const before = inputEl.value.slice(0, pos - 1);
-                const after = inputEl.value.slice(pos);
-                const newVal = `${before}{{${key}}}${after}`;
-
-                onChange(focusedHeader.index, focusedHeader.field, newVal);
-                closeDropdown();
-              }}
-            >
-              {key}
-            </li>
-          ))}
-        </ul>
+            onChange(focusedHeader.index, focusedHeader.field, newVal);
+            closeDropdown();
+          }}
+        />
       )}
     </div>
   );

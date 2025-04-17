@@ -8,6 +8,7 @@ import { UIButton } from '@ui/UIButton';
 import { useRef, useState } from 'react';
 import { notifyError } from '@utils/notify';
 import { useDropdown } from '@utils/variables';
+import DropdownList from './DropdownList';
 
 type EditorModeType = 'json' | 'text';
 
@@ -109,38 +110,28 @@ export default function RequestBody({ value, onChange, mode = 'json', onModeChan
           foldGutter: mode === 'json',
         }}
       />
-      {showDropdown && variables?.length > 0 && (
-        <ul
-          className="absolute z-10 bg-white border shadow-md rounded max-h-60 overflow-auto"
-          style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
-        >
-          {variables.map(({ key }) => (
-            <li
-              key={key}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-              onMouseDown={(e) => {
-                e.preventDefault();
+      {variables?.length > 0 && (
+        <DropdownList
+          showDropdown={showDropdown}
+          dropdownPosition={dropdownPosition}
+          options={variables}
+          onSelect={function (key: string): void {
+            const editorView = editorRef.current?.view;
 
-                const editorView = editorRef.current?.view;
+            if (!editorView) return;
 
-                if (!editorView) return;
+            const current = editorView.state.doc.toString();
+            const before = current.slice(0, cursorPosition - 0);
+            const after = current.slice(cursorPosition);
+            const updated = `${before}{${key}}${after}`;
 
-                const current = editorView.state.doc.toString();
-                const before = current.slice(0, cursorPosition - 0);
-                const after = current.slice(cursorPosition);
-                const updated = `${before}{${key}}${after}`;
+            editorView.dispatch({
+              changes: { from: 0, to: current.length, insert: updated },
+            });
 
-                editorView.dispatch({
-                  changes: { from: 0, to: current.length, insert: updated },
-                });
-
-                closeDropdown();
-              }}
-            >
-              {key}
-            </li>
-          ))}
-        </ul>
+            closeDropdown();
+          }}
+        />
       )}
     </div>
   );

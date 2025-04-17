@@ -11,6 +11,7 @@ import { ApiResponse, Method, MethodType } from '@utils/makeRequest';
 import React from 'react';
 import CodeGenerator from './CodeGenerator';
 import { interpolateVariables, useDropdown, useLocalStorageVariables } from '@utils/variables';
+import DropdownList from './DropdownList';
 
 interface RestClientFormProps<T> {
   initialMethod?: MethodType;
@@ -102,6 +103,19 @@ function RestClientForm<T>({
     handleUrl(false, method, interpolatedUrl, interpolatedBody, filteredHeaders);
   }, [method, url, body, headers, handleUrl, variables]);
 
+  const handleSelectVariable = (key: string) => {
+    if (!inputRef.current) return;
+
+    const cursorPos = inputRef.current.selectionStart ?? url.length;
+    const before = url.slice(0, cursorPos - 1);
+    const after = url.slice(cursorPos);
+
+    const newValue = `${before}{{${key}}}${after}`;
+
+    setUrl(newValue);
+    closeDropdown();
+  };
+
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">{t('titles.restClient')}</h1>
@@ -151,34 +165,12 @@ function RestClientForm<T>({
             }}
             required
           />
-          {showDropdown && (
-            <ul
-              className="absolute z-10 bg-white border shadow-md rounded max-h-60 overflow-auto"
-              style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
-            >
-              {variables.map(({ key }) => (
-                <li
-                  key={key}
-                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    if (!inputRef.current) return;
-
-                    const cursorPos = inputRef.current.selectionStart ?? url.length;
-                    const before = url.slice(0, cursorPos - 1);
-                    const after = url.slice(cursorPos);
-
-                    const newValue = `${before}{{${key}}}${after}`;
-
-                    setUrl(newValue);
-                    closeDropdown();
-                  }}
-                >
-                  {key}
-                </li>
-              ))}
-            </ul>
-          )}
+          <DropdownList
+            showDropdown={showDropdown}
+            dropdownPosition={dropdownPosition}
+            options={variables}
+            onSelect={handleSelectVariable}
+          />
           <UIButton
             type="submit"
             disabled={isLoading || !url.trim()}
