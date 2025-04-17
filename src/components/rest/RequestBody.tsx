@@ -1,11 +1,11 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import CodeMirror, { EditorView } from '@uiw/react-codemirror';
+import CodeMirror, { EditorView, ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { json } from '@codemirror/lang-json';
 import { UIHeader } from '@ui/UIHeader';
 import { UIButton } from '@ui/UIButton';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { notifyError } from '@utils/notify';
 
 type EditorModeType = 'json' | 'text';
@@ -15,11 +15,17 @@ interface RequestBodyProps {
   onChange: (value: string) => void;
   mode?: EditorModeType;
   onModeChange?: (mode: EditorModeType) => void;
+  variables: { key: string; value: string }[];
 }
 
-export default function RequestBody({ value, onChange, mode = 'json', onModeChange }: RequestBodyProps) {
+export default function RequestBody({ value, onChange, mode = 'json', onModeChange, variables }: RequestBodyProps) {
   const [editorMode, setEditorMode] = useState<EditorModeType>(mode);
   const extensions = editorMode === 'json' ? [json()] : [];
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [cursorPosition, setCursorPosition] = useState<number>(0);
+  const editorRef = useRef<ReactCodeMirrorRef>(null);
 
   const t = useTranslations('Rest');
 
@@ -66,9 +72,29 @@ export default function RequestBody({ value, onChange, mode = 'json', onModeChan
       </div>
 
       <CodeMirror
+        ref={editorRef}
         value={value}
         extensions={[EditorView.lineWrapping, ...extensions]}
-        onChange={onChange}
+        onChange={(val, viewUpdate) => {
+          onChange(val);
+
+          const view = viewUpdate.view;
+          const cursor = view.state.selection.main.head;
+          const beforeCursor = val.slice(0, cursor);
+
+          setCursorPosition(cursor);
+
+          if (beforeCursor.endsWith('{')) {
+            const coords = view.coordsAtPos(cursor);
+
+            if (coords) {
+              setDropdownPosition({ top: coords.bottom + window.scrollY, left: coords.left + window.scrollX });
+              setShowDropdown(true);
+            }
+          } else {
+            setShowDropdown(false);
+          }
+        }}
         style={{
           textAlign: 'start',
           whiteSpace: 'pre-wrap',
@@ -84,6 +110,39 @@ export default function RequestBody({ value, onChange, mode = 'json', onModeChan
           foldGutter: mode === 'json',
         }}
       />
+      {showDropdown && variables?.length > 0 && (
+        <ul
+          className="absolute z-10 bg-white border shadow-md rounded max-h-60 overflow-auto"
+          style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
+        >
+          {variables.map(({ key }) => (
+            <li
+              key={key}
+              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+              onMouseDown={(e) => {
+                e.preventDefault();
+
+                const editorView = editorRef.current?.view;
+
+                if (!editorView) return;
+
+                const current = editorView.state.doc.toString();
+                const before = current.slice(0, cursorPosition - 0);
+                const after = current.slice(cursorPosition);
+                const updated = `${before}{${key}}${after}`;
+
+                editorView.dispatch({
+                  changes: { from: 0, to: current.length, insert: updated },
+                });
+
+                setShowDropdown(false);
+              }}
+            >
+              {key}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

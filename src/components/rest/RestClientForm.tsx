@@ -228,6 +228,7 @@ function RestClientForm<T>({
           value={body}
           onChange={setBody}
           onModeChange={setBodyMode}
+          variables={variables}
         />
 
         <div>
