@@ -100,6 +100,7 @@ export const GenericForm = <T extends FormType>({ formType, onSubmit, fields, ch
           ))}
           {children}
           <UIButton
+            data-testid="submitBtn"
             text={isLoading ? t('loading') : t('submitButtonText')}
             type="submit"
             disabled={!isValid}

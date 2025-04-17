@@ -38,7 +38,8 @@
       "@types/*": ["src/types/*"],
       "@ui/*": ["src/ui/*"],
       "@utils/*": ["src/utils/*"],
-      "@i18n/*": ["src/i18n/*"]
+      "@i18n/*": ["src/i18n/*"],
+      "@messages/*": ["src/messages/*"]
     }
   },
   "include": ["src"]
