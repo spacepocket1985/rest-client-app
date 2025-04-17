@@ -120,5 +120,16 @@
       "errorCreatingRequest": "Error creating request",
       "selecatLangTogenerate": "Select a language to generate code"
     }
+  },
+  "VariablesSection": {
+    "title": "Variables",
+    "variable": "Variable",
+    "value": "Value",
+    "namePlaceholder": "Variable name",
+    "valuePlaceholder": "Variable value",
+    "addButton": "Add Variable",
+    "errorDuplicate": "A variable with this name already exists.",
+    "update": "Update",
+    "delete": "Delete"
   }
 }

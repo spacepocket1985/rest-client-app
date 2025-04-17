@@ -116,5 +116,16 @@
       "errorCreatingRequest": "Ошибка при создании запроса, подробнее ->",
       "selecatLangTogenerate": "Выберите язык для генерации кода"
     }
+  },
+  "VariablesSection": {
+    "title": "Переменные",
+    "variable": "Переменная",
+    "value": "Значение",
+    "namePlaceholder": "Имя переменной",
+    "valuePlaceholder": "Значение переменной",
+    "addButton": "Добавить переменную",
+    "errorDuplicate": "Переменная с таким именем уже существует.",
+    "update": "Обновить",
+    "delete": "Удалить"
   }
 }
