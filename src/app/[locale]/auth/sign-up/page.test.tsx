@@ -24,19 +24,21 @@ vi.mock('next/navigation', async () => {
     ...actual,
     useRouter: () => ({
       push: mockPush,
-      prefetch: vi.fn(),
       replace: vi.fn(),
+      prefetch: vi.fn(),
       back: vi.fn(),
-      pathname: '/',
-      query: {},
-      asPath: '/',
+      forward: vi.fn(),
+      refresh: vi.fn(),
     }),
+    usePathname: () => '/',
+    useSearchParams: () => new URLSearchParams(),
   };
 });
 
 vi.mock('@context/AuthContext', () => ({
   useAuth: () => ({
     user: null,
+    loading: false,
   }),
 }));
 
@@ -51,21 +53,21 @@ const renderPage = (locale = 'en') => {
   );
 };
 
-describe('SignInPage', () => {
+describe('SignUpPage', () => {
   it('should render sign-up page', async () => {
     renderPage();
 
-    const registerLink = screen.getByText(/Sign In/i);
+    await waitFor(() => {
+      const registerLink = screen.getByText(/Sign In/i);
 
-    expect(registerLink).toBeInTheDocument();
+      expect(registerLink).toBeInTheDocument();
+    });
 
     expect(screen.getByText(/Do you already have an account?/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Confirm Password')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Name')).toBeInTheDocument();
-
-    fireEvent.click(registerLink);
   });
 
   it('displays error messages if input fields are invalid', async () => {

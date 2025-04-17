@@ -20,7 +20,7 @@ export default function ResponseView<T>({ response }: ResponseViewProps<T>) {
   return (
     <div className={`mb-4 ${backgroundColor} p-4 rounded`}>
       <div className="flex justify-between items-center mb-2">
-        <UIHeader text={t('titles.body')} />
+        <UIHeader text={t('titles.response')} />
         <div className="flex items-center gap-4">
           <UIHeader text={t('titles.statusCode')} />
 

@@ -15,19 +15,21 @@ vi.mock('next/navigation', async () => {
     ...actual,
     useRouter: () => ({
       push: mockPush,
-      prefetch: vi.fn(),
       replace: vi.fn(),
+      prefetch: vi.fn(),
       back: vi.fn(),
-      pathname: '/',
-      query: {},
-      asPath: '/',
+      forward: vi.fn(),
+      refresh: vi.fn(),
     }),
+    usePathname: () => '/',
+    useSearchParams: () => new URLSearchParams(),
   };
 });
 
 vi.mock('@context/AuthContext', () => ({
   useAuth: () => ({
     user: null,
+    loading: false,
   }),
 }));
 
@@ -46,15 +48,15 @@ describe('SignInPage', () => {
   it('should render sign-in page', async () => {
     renderPage();
 
-    const registerLink = screen.getByText(/Register/i);
+    await waitFor(() => {
+      const registerLink = screen.getByText(/Register/i);
 
-    expect(registerLink).toBeInTheDocument();
+      expect(registerLink).toBeInTheDocument();
+    });
 
     expect(screen.getByText(/Don’t have an account?/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
-
-    fireEvent.click(registerLink);
   });
 
   it('should enable submit button when form is valid', async () => {
