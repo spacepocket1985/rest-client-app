@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { UIButton } from '@ui/UIButton';
 import { UIHeader } from '@ui/UIHeader';
 import { useRef, useState } from 'react';
+import { useDropdown } from '@utils/variables';
 
 interface RequestHeadersProps {
   headers: { key: string; value: string }[];
@@ -16,8 +17,7 @@ interface RequestHeadersProps {
 export default function RequestHeaders({ headers, onAdd, onRemove, onChange, variables }: RequestHeadersProps) {
   const t = useTranslations('Rest');
 
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const { showDropdown, dropdownPosition, openDropdown, closeDropdown } = useDropdown();
   const [focusedHeader, setFocusedHeader] = useState<{ index: number; field: 'key' | 'value' } | null>(null);
 
   const inputRefs = useRef<Record<'key' | 'value', HTMLInputElement | null>[]>([]);
@@ -47,14 +47,13 @@ export default function RequestHeaders({ headers, onAdd, onRemove, onChange, var
               if (textBeforeCursor.endsWith('{')) {
                 const rect = e.target.getBoundingClientRect();
 
-                setDropdownPosition({
+                openDropdown({
                   top: rect.top + window.scrollY + e.target.offsetHeight,
                   left: rect.left + window.scrollX,
                 });
-                setShowDropdown(true);
                 setFocusedHeader({ index, field: 'key' });
               } else {
-                setShowDropdown(false);
+                closeDropdown();
                 setFocusedHeader(null);
               }
             }}
@@ -76,14 +75,13 @@ export default function RequestHeaders({ headers, onAdd, onRemove, onChange, var
               if (textBeforeCursor.endsWith('{')) {
                 const rect = e.target.getBoundingClientRect();
 
-                setDropdownPosition({
+                openDropdown({
                   top: rect.top + window.scrollY + e.target.offsetHeight,
                   left: rect.left + window.scrollX,
                 });
-                setShowDropdown(true);
                 setFocusedHeader({ index, field: 'value' });
               } else {
-                setShowDropdown(false);
+                closeDropdown();
                 setFocusedHeader(null);
               }
             }}
@@ -123,7 +121,7 @@ export default function RequestHeaders({ headers, onAdd, onRemove, onChange, var
                 const newVal = `${before}{{${key}}}${after}`;
 
                 onChange(focusedHeader.index, focusedHeader.field, newVal);
-                setShowDropdown(false);
+                closeDropdown();
               }}
             >
               {key}

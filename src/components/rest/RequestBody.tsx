@@ -7,6 +7,7 @@ import { UIHeader } from '@ui/UIHeader';
 import { UIButton } from '@ui/UIButton';
 import { useRef, useState } from 'react';
 import { notifyError } from '@utils/notify';
+import { useDropdown } from '@utils/variables';
 
 type EditorModeType = 'json' | 'text';
 
@@ -22,8 +23,7 @@ export default function RequestBody({ value, onChange, mode = 'json', onModeChan
   const [editorMode, setEditorMode] = useState<EditorModeType>(mode);
   const extensions = editorMode === 'json' ? [json()] : [];
 
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const { showDropdown, dropdownPosition, openDropdown, closeDropdown } = useDropdown();
   const [cursorPosition, setCursorPosition] = useState<number>(0);
   const editorRef = useRef<ReactCodeMirrorRef>(null);
 
@@ -88,11 +88,10 @@ export default function RequestBody({ value, onChange, mode = 'json', onModeChan
             const coords = view.coordsAtPos(cursor);
 
             if (coords) {
-              setDropdownPosition({ top: coords.bottom + window.scrollY, left: coords.left + window.scrollX });
-              setShowDropdown(true);
+              openDropdown({ top: coords.bottom + window.scrollY, left: coords.left + window.scrollX });
             }
           } else {
-            setShowDropdown(false);
+            closeDropdown();
           }
         }}
         style={{
@@ -135,7 +134,7 @@ export default function RequestBody({ value, onChange, mode = 'json', onModeChan
                   changes: { from: 0, to: current.length, insert: updated },
                 });
 
-                setShowDropdown(false);
+                closeDropdown();
               }}
             >
               {key}

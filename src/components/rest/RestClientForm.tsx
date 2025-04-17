@@ -10,7 +10,7 @@ import { UIButton } from '@ui/UIButton';
 import { ApiResponse, Method, MethodType } from '@utils/makeRequest';
 import React from 'react';
 import CodeGenerator from './CodeGenerator';
-import { interpolateVariables } from '@utils/variables';
+import { interpolateVariables, useDropdown, useLocalStorageVariables } from '@utils/variables';
 
 interface RestClientFormProps<T> {
   initialMethod?: MethodType;
@@ -44,9 +44,8 @@ function RestClientForm<T>({
   const [headers, setHeaders] = useState(initialHeaders);
   const [bodyMode, setBodyMode] = useState<'json' | 'text'>('json');
 
-  const [variables, setVariables] = useState<{ key: string; value: string }[]>([]);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const variables = useLocalStorageVariables();
+  const { showDropdown, dropdownPosition, openDropdown, closeDropdown } = useDropdown();
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const t = useTranslations('Rest');
@@ -103,22 +102,6 @@ function RestClientForm<T>({
     handleUrl(false, method, interpolatedUrl, interpolatedBody, filteredHeaders);
   }, [method, url, body, headers, handleUrl, variables]);
 
-  useEffect(() => {
-    const stored = localStorage.getItem('rest-client-vars');
-
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-
-        if (Array.isArray(parsed)) {
-          setVariables(parsed);
-        }
-      } catch (err) {
-        console.error('Invalid JSON in rest-client-vars', err);
-      }
-    }
-  }, []);
-
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">{t('titles.restClient')}</h1>
@@ -158,14 +141,12 @@ function RestClientForm<T>({
               if (textBeforeCursor.endsWith('{')) {
                 const rect = e.target.getBoundingClientRect();
 
-                setDropdownPosition({
+                openDropdown({
                   top: rect.top + window.scrollY + e.target.offsetHeight,
                   left: rect.left + window.scrollX,
                 });
-
-                setShowDropdown(true);
               } else {
-                setShowDropdown(false);
+                closeDropdown();
               }
             }}
             required
@@ -190,7 +171,7 @@ function RestClientForm<T>({
                     const newValue = `${before}{{${key}}}${after}`;
 
                     setUrl(newValue);
-                    setShowDropdown(false);
+                    closeDropdown();
                   }}
                 >
                   {key}

@@ -27,7 +27,7 @@ export default function ResponseView<T>({ response }: ResponseViewProps<T>) {
           {response.status > 0 && <UIHeader text={response.status} />}
         </div>
       </div>
-      <pre className="border rounded p-2 bg-gray-200 overflow-auto">
+      <pre className="border rounded p-2 bg-gray-200 overflow-auto text-start">
         <JsonView
           data={
             response.status > 0 ?
