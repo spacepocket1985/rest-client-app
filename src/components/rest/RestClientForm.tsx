@@ -10,6 +10,8 @@ import { UIButton } from '@ui/UIButton';
 import { ApiResponse, Method, MethodType } from '@utils/makeRequest';
 import React from 'react';
 import CodeGenerator from './CodeGenerator';
+import { interpolateVariables, useDropdown, useLocalStorageVariables } from '@utils/variables';
+import DropdownList from './DropdownList';
 
 interface RestClientFormProps<T> {
   initialMethod?: MethodType;
@@ -43,6 +45,10 @@ function RestClientForm<T>({
   const [headers, setHeaders] = useState(initialHeaders);
   const [bodyMode, setBodyMode] = useState<'json' | 'text'>('json');
 
+  const variables = useLocalStorageVariables();
+  const { showDropdown, dropdownPosition, openDropdown, closeDropdown } = useDropdown();
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
   const t = useTranslations('Rest');
 
   useEffect(() => {
@@ -72,14 +78,43 @@ function RestClientForm<T>({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const filteredHeaders = headers.filter((h) => h.key.trim() !== '');
+    const interpolatedUrl = interpolateVariables(url, variables);
+    const interpolatedBody = interpolateVariables(body, variables);
+    const filteredHeaders = headers
+      .filter((h) => h.key.trim() !== '')
+      .map((h) => ({
+        key: interpolateVariables(h.key, variables),
+        value: interpolateVariables(h.value, variables),
+      }));
 
-    handleUrl(true, method, url, body, filteredHeaders);
+    handleUrl(true, method, interpolatedUrl, interpolatedBody, filteredHeaders);
   };
 
   useEffect(() => {
-    handleUrl(false, method, url, body, headers);
-  }, [method, url, body, headers, handleUrl]);
+    const interpolatedUrl = interpolateVariables(url, variables);
+    const interpolatedBody = interpolateVariables(body, variables);
+    const filteredHeaders = headers
+      .filter((h) => h.key.trim() !== '')
+      .map((h) => ({
+        key: interpolateVariables(h.key, variables),
+        value: interpolateVariables(h.value, variables),
+      }));
+
+    handleUrl(false, method, interpolatedUrl, interpolatedBody, filteredHeaders);
+  }, [method, url, body, headers, handleUrl, variables]);
+
+  const handleSelectVariable = (key: string) => {
+    if (!inputRef.current) return;
+
+    const cursorPos = inputRef.current.selectionStart ?? url.length;
+    const before = url.slice(0, cursorPos - 1);
+    const after = url.slice(cursorPos);
+
+    const newValue = `${before}{{${key}}}${after}`;
+
+    setUrl(newValue);
+    closeDropdown();
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -104,12 +139,37 @@ function RestClientForm<T>({
             ))}
           </select>
           <input
+            ref={inputRef}
             type="text"
             className="border rounded p-2 flex-grow"
             placeholder={t('placeholders.url')}
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+
+              setUrl(val);
+
+              const cursorIndex = e.target.selectionStart ?? 0;
+              const textBeforeCursor = val.slice(0, cursorIndex);
+
+              if (textBeforeCursor.endsWith('{')) {
+                const rect = e.target.getBoundingClientRect();
+
+                openDropdown({
+                  top: rect.top + window.scrollY + e.target.offsetHeight,
+                  left: rect.left + window.scrollX,
+                });
+              } else {
+                closeDropdown();
+              }
+            }}
             required
+          />
+          <DropdownList
+            showDropdown={showDropdown}
+            dropdownPosition={dropdownPosition}
+            options={variables}
+            onSelect={handleSelectVariable}
           />
           <UIButton
             type="submit"
@@ -135,11 +195,13 @@ function RestClientForm<T>({
             setHeaders(newHeaders);
             // updateUrl();
           }}
+          variables={variables}
         />
         <RequestBody
           value={body}
           onChange={setBody}
           onModeChange={setBodyMode}
+          variables={variables}
         />
 
         <div>
