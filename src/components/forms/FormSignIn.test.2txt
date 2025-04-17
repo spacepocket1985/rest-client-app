@@ -1,0 +1,75 @@
+import { render, screen, act, fireEvent, waitFor } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import FormSignIn from './FormSignIn';
+
+// 1. Сначала объявляем все mock-функции
+const mockPush = vi.fn();
+const mockRedirect = vi.fn();
+const mockLogIn = vi.fn();
+
+// 2. Затем настраиваем моки в правильном порядке
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: mockPush }),
+  usePathname: () => '/auth/sign-in',
+  redirect: mockRedirect,
+}));
+
+vi.mock('@context/AuthContext', () => ({
+  useAuth: vi.fn().mockReturnValue({
+    user: null,
+    isLoading: false,
+  }),
+  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
+vi.mock('@utils/firebase', () => ({
+  logInWithEmailAndPassword: mockLogIn,
+  onError: vi.fn(),
+}));
+
+vi.mock('@components/protectedRoute/ProtectedRoute', () => ({
+  __esModule: true,
+  default: (Component: React.ComponentType) => Component,
+  AuthRequirement: {
+    WithAuth: 'with-auth',
+    WithoutAuth: 'without-auth',
+  },
+}));
+
+describe('FormSignIn', () => {
+  it('should render sign in form', async () => {
+    await act(async () => {
+      render(<FormSignIn />);
+    });
+
+    expect(screen.getByText('register')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('eMailAddress')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('password')).toBeInTheDocument();
+    expect(screen.getByText('dontHaveAccount')).toBeInTheDocument();
+  });
+
+  // it('should call login when form is submitted', async () => {
+  //   await act(async () => {
+  //     render(<FormSignIn />);
+  //   });
+
+  //   await waitFor(() => {
+  //     act(() => {
+  //       fireEvent.change(screen.getByPlaceholderText('eMailAddress'), {
+  //         target: { value: 'test@example.com' },
+  //       });
+  //       fireEvent.change(screen.getByPlaceholderText('password'), {
+  //         target: { value: 'password123' },
+  //       });
+  //     });
+  //   });
+
+  //   act(() => {
+  //     fireEvent.click(screen.getByRole('button'));
+  //   });
+
+  //   await waitFor(() => {
+  //     expect(mockLogIn).toHaveBeenCalledWith('test@example.com', 'password123');
+  //   });
+  // });
+});
