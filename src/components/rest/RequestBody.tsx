@@ -10,7 +10,7 @@ import { notifyError } from '@utils/notify';
 
 type EditorModeType = 'json' | 'text';
 
-interface RequestBodyProps {
+export interface RequestBodyProps {
   value: string;
   onChange: (value: string) => void;
   mode?: EditorModeType;
