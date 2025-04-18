@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import RestClient from './RestClient';
 import { Method, ApiResponse } from '@utils/makeRequest';
@@ -80,5 +80,29 @@ describe('RestClient Component', () => {
     expect(screen.getByText(/userId/i)).toBeInTheDocument();
     expect(screen.getByText(200)).toBeInTheDocument();
     expect(screen.getByText(/curl --location 'https:\/\/jsonplaceholder\.typicode\.com\/posts'/i)).toBeInTheDocument();
+  });
+
+  it('should change method type', () => {
+    renderRestClient();
+
+    const methodSelect = screen.getByTestId('method') as HTMLSelectElement;
+
+    fireEvent.change(methodSelect, { target: { value: 'POST' } });
+
+    expect(methodSelect.value).toBe('POST');
+  });
+
+  it('should change language code type', () => {
+    renderRestClient();
+
+    const codeLangSelect = screen.getByTestId('language-select') as HTMLSelectElement;
+
+    fireEvent.change(codeLangSelect, { target: { value: 'js-fetch' } });
+
+    expect(codeLangSelect.value).toBe('js-fetch');
+    expect(screen.getByText(/const requestOptions = {/, { selector: 'code' })).toBeInTheDocument();
+    expect(
+      screen.getByText(/fetch\("https:\/\/jsonplaceholder\.typicode\.com\/posts", requestOptions\)/),
+    ).toBeInTheDocument();
   });
 });

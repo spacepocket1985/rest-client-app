@@ -124,6 +124,7 @@ function RestClientForm<T>({
         <div className="flex mb-4 gap-2">
           <select
             className="border rounded p-2 mr-4"
+            data-testid="method"
             value={method}
             onChange={(e) => {
               setMethod(e.target.value as MethodType);
@@ -193,7 +194,6 @@ function RestClientForm<T>({
 
             newHeaders[index] = { ...newHeaders[index], [type]: value };
             setHeaders(newHeaders);
-            // updateUrl();
           }}
           variables={variables}
         />

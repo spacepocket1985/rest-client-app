@@ -89,4 +89,31 @@ describe('RequestBody', () => {
 
     expect(notifyError).toHaveBeenCalled();
   });
+
+  it('should not show pretty button in text mode', () => {
+    renderRequestBody({
+      value: '',
+      onChange: mockOnChange,
+      mode: 'text',
+      variables: [],
+    });
+
+    expect(screen.queryByText(messages.Rest.buttons.prettyify)).toBeNull();
+  });
+
+  it('should switch to text mode when selected', () => {
+    renderRequestBody({
+      value: '',
+      onChange: mockOnChange,
+      onModeChange: mockOnModeChange,
+      variables: [],
+    });
+
+    const select = screen.getByRole('combobox');
+
+    fireEvent.change(select, { target: { value: 'text' } });
+
+    expect(mockOnModeChange).toHaveBeenCalledWith('text');
+    expect(screen.getByDisplayValue('text')).toBeInTheDocument();
+  });
 });
