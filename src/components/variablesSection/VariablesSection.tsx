@@ -87,12 +87,6 @@ function VariablesSection() {
           variable={v}
           variables={variables}
           onUpdate={(originalKey, updated) => {
-            if (originalKey !== updated.key && variables.some((v) => v.key === updated.key)) {
-              alert(t('errorDuplicate'));
-
-              return;
-            }
-
             setVariables((prev) => prev.map((item) => (item.key === originalKey ? updated : item)));
           }}
           onDelete={(key) => {
