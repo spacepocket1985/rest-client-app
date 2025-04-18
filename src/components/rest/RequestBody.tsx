@@ -73,6 +73,7 @@ export default function RequestBody({ value, onChange, mode = 'json', onModeChan
       </div>
 
       <CodeMirror
+        data-testid="codeMirror"
         ref={editorRef}
         value={value}
         extensions={[EditorView.lineWrapping, ...extensions]}

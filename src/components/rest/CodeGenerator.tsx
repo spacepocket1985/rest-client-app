@@ -119,6 +119,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ method, url, headers, bod
           <UIHeader text={t('selectLang')} />
           <select
             id="language-select"
+            data-testid="language-select"
             className="border rounded p-2 w-full"
             value={selectedLanguageId}
             onChange={(e) => setSelectedLanguageId(e.target.value)}
