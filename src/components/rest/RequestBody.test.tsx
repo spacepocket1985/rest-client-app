@@ -47,14 +47,23 @@ describe('RequestBody', () => {
   });
 
   it('should render the component and display the JSON option by default', () => {
-    renderRequestBody({ value: '', onChange: mockOnChange });
+    renderRequestBody({
+      value: '',
+      onChange: mockOnChange,
+      variables: [],
+    });
 
     expect(screen.getByText('Body')).toBeInTheDocument();
     expect(screen.getByDisplayValue('JSON')).toBeInTheDocument();
   });
 
   it('should change mode to text when selected', () => {
-    renderRequestBody({ value: '', onChange: mockOnChange, onModeChange: mockOnModeChange });
+    renderRequestBody({
+      value: '',
+      onChange: mockOnChange,
+      onModeChange: mockOnModeChange,
+      variables: [],
+    });
 
     const select = screen.getByRole('combobox');
 
@@ -67,7 +76,12 @@ describe('RequestBody', () => {
   it('should call notifyError on invalid JSON', () => {
     const invalidJson = '{"key": "value"';
 
-    renderRequestBody({ value: invalidJson, onChange: mockOnChange, mode: 'json' });
+    renderRequestBody({
+      value: invalidJson,
+      onChange: mockOnChange,
+      mode: 'json',
+      variables: [],
+    });
 
     const button = screen.getByText(/prettyify/i);
 

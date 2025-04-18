@@ -131,5 +131,10 @@
     "errorDuplicate": "A variable with this name already exists.",
     "update": "Update",
     "delete": "Delete"
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "description": "The page you requested does not exist.",
+    "backHome": "Go to Homepage"
   }
 }

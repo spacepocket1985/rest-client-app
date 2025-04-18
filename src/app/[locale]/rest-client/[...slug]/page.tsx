@@ -15,13 +15,13 @@ interface RestPageProps {
 
 export default async function RestClientPage({ params, searchParams }: RestPageProps) {
   const { slug, locale } = await params;
-  const method = slug[1] || Method.GET;
+  const method = slug[0] || Method.GET;
 
   if (!(method.toUpperCase() in Method)) {
     notFound();
   }
 
-  const endpoint = slug[2] && slug[2] !== spaceInBase64 ? decodeBase64(slug[2]) : '';
+  const endpoint = slug[1] && slug[1] !== spaceInBase64 ? decodeBase64(slug[1]) : '';
   const resolvedSearchParams = await searchParams;
 
   const headers: HeadersInit =
@@ -29,7 +29,7 @@ export default async function RestClientPage({ params, searchParams }: RestPageP
       Object.fromEntries(Object.entries(resolvedSearchParams).map(([key, value]) => [key, value]))
     : {};
 
-  const body = slug[3] && slug[3] !== spaceInBase64 ? decodeBase64(slug[3]) : '';
+  const body = slug[2] && slug[2] !== spaceInBase64 ? decodeBase64(slug[2]) : '';
 
   const requestMethod = method.toUpperCase() as MethodType;
 
