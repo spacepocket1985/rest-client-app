@@ -3,12 +3,9 @@ import { Inter } from 'next/font/google';
 import { Providers } from './providers';
 import Header from '@components/header/Header';
 import Footer from '@components/footer/Footer';
-
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing';
-
-import './globals.css';
 import { ToastContainer } from 'react-toastify';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -32,17 +29,15 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={locale}>
-      <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <NextIntlClientProvider>
-          <Providers>
-            <ToastContainer />
-            <Header />
-            <main className="flex flex-col items-center justify-self-center">{children}</main>
-            <Footer />
-          </Providers>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider>
+      <Providers>
+        <ToastContainer />
+        <Header />
+        <main className={`${inter.className} flex flex-col items-center justify-self-center min-h-screen`}>
+          {children}
+        </main>
+        <Footer />
+      </Providers>
+    </NextIntlClientProvider>
   );
 }

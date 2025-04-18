@@ -43,6 +43,7 @@ const renderRequestHeaders = (locale = 'en', headers = mockHeaders) => {
         onAdd={mockOnAdd}
         onRemove={mockOnRemove}
         onChange={mockOnChange}
+        variables={[]}
       />
     </NextIntlClientProvider>,
   );
