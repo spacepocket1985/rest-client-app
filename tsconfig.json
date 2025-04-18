@@ -34,6 +34,12 @@
     "jsx": "preserve",
     "strictNullChecks": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", "./dist/types/**/*.ts", "src/components/forms/FormSignIn.test.2txt"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    "./dist/types/**/*.ts",
+    "src/components/forms/FormSignIn.test.2txt"
+  ],
   "exclude": ["node_modules"]
 }
