@@ -145,7 +145,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ method, url, headers, bod
         : error ?
           <div className="text-red-500 p-2 bg-red-50 rounded">{error}</div>
         : <div className="relative">
-            <pre className="bg-gray-100 p-4 rounded overflow-x-auto">
+            <pre className="bg-gray-100 p-4 rounded overflow-x-auto text-start">
               <code>{generatedCode || t('messages.selecatLangTogenerate')}</code>
             </pre>
             {generatedCode && (

@@ -11,10 +11,14 @@ export function useLocalStorageVariables(key = 'rest-client-vars') {
         const parsed = JSON.parse(stored);
 
         if (Array.isArray(parsed)) {
-          setVariables(parsed);
+          const deduped = parsed.filter((item, index, self) => index === self.findIndex((t) => t.key === item.key));
+
+          localStorage.setItem(key, JSON.stringify(deduped));
+
+          setVariables(deduped);
         }
-      } catch (err) {
-        console.error('Invalid JSON in local storage:', err);
+      } catch {
+        localStorage.setItem(key, '[]');
       }
     }
   }, [key]);

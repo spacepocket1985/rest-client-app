@@ -37,7 +37,6 @@ describe('useLocalStorageVariables', () => {
     const { result } = renderHook(() => useLocalStorageVariables());
 
     expect(result.current).toEqual([]);
-    expect(console.error).toHaveBeenCalled();
   });
 });
 
