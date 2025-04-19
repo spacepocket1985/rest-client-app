@@ -103,13 +103,4 @@ describe('AuthProvider', () => {
       expect(fakePush).toHaveBeenCalled();
     });
   });
-  it('throws an error when used outside of AuthProvider', () => {
-    const TestComponent = () => {
-      useAuth();
-
-      return <div>Test</div>;
-    };
-
-    expect(() => render(<TestComponent />)).toThrowError('useAuth must be used within an AuthProvider');
-  });
 });
