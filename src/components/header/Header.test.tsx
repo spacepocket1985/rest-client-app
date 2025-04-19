@@ -129,4 +129,18 @@ describe('Header Component Tests', () => {
     expect(header).toHaveClass('bg-gray-400');
     expect(header).toHaveClass('shadow-md');
   });
+  it('should not add scrolled class when window is scrolled not enough', () => {
+    renderHeader('en', {
+      user: null,
+      loading: false,
+      isLoading: false,
+      name: null,
+    });
+
+    fireEvent.scroll(window, { target: { scrollY: 49 } });
+    const header = screen.getByRole('banner');
+
+    expect(header).not.toHaveClass('bg-gray-400');
+    expect(header).not.toHaveClass('shadow-md');
+  });
 });

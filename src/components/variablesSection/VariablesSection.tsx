@@ -10,13 +10,9 @@ function VariablesSection() {
   const t = useTranslations('VariablesSection');
 
   const [variables, setVariables] = useState<{ key: string; value: string }[]>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('rest-client-vars');
+    const saved = localStorage.getItem('rest-client-vars');
 
-      return saved ? JSON.parse(saved) : [];
-    }
-
-    return [];
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [newVariable, setNewVariable] = useState('');
