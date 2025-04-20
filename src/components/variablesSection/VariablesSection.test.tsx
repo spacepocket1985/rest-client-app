@@ -22,9 +22,6 @@ vi.mock('next/navigation', async () => {
   };
 });
 
-// beforeEach(() => {
-//   localStorage.setItem('rest-client-vars', JSON.stringify([{ key: 'varname', value: 'varvalue' }]));
-// });
 describe('VariablesSection with empty ls', () => {
   it('add an empty variable', () => {
     render(
@@ -43,16 +40,6 @@ describe('VariablesSection with empty ls', () => {
       target: { value: '123' },
     });
     fireEvent.click(screen.getByText('Add Variable'));
-
-    // const keyInput = screen.getByDisplayValue('apiKey');
-    // const valueInput = screen.getByDisplayValue('123');
-
-    // fireEvent.change(keyInput, { target: { value: 'newKey' } });
-    // fireEvent.change(valueInput, { target: { value: '999' } });
-
-    // fireEvent.click(screen.getAllByText('Update')[1]);
-
-    // expect(screen.getByDisplayValue('newKey')).toBeInTheDocument();
     expect(screen.queryByText('Delete')).not.toBeInTheDocument();
   });
 });

@@ -1,5 +1,5 @@
 import { vi, describe, beforeEach, it, expect } from 'vitest';
-import { notify } from './notify';
+import { notify, notifyError, notifyInfo, notifySuccess, notifyWarning } from './notify';
 import { toast } from 'react-toastify';
 
 vi.mock('react-toastify', () => ({
@@ -80,5 +80,33 @@ describe('Notification', () => {
       draggable: true,
       theme: 'light',
     });
+  });
+});
+
+describe('notifyXxx wrappers', () => {
+  it('notifySuccess calls toast.success', () => {
+    notifySuccess('yay!');
+    expect(toast.success).toHaveBeenCalledWith('yay!', expect.any(Object));
+  });
+
+  it('notifyError calls toast.error', () => {
+    notifyError('oh no');
+    expect(toast.error).toHaveBeenCalledWith('oh no', expect.any(Object));
+  });
+
+  it('notifyInfo calls toast.info', () => {
+    notifyInfo('FYI');
+    expect(toast.info).toHaveBeenCalledWith('FYI', expect.any(Object));
+  });
+
+  it('notifyWarning calls toast.warn', () => {
+    notifyWarning('watch out');
+    expect(toast.warn).toHaveBeenCalledWith('watch out', expect.any(Object));
+  });
+  it('defaults to info when no type is provided', () => {
+    const message = 'Default info message';
+
+    notify(message);
+    expect(toast.info).toHaveBeenCalledWith(message, expect.any(Object));
   });
 });
