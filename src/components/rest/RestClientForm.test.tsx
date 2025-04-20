@@ -5,6 +5,24 @@ import RestClientForm from './RestClientForm';
 import { Method, MethodType, ApiResponse } from '@utils/makeRequest';
 import messages from '../../messages/en.json';
 
+const openDropdownMock = vi.fn();
+const closeDropdownMock = vi.fn();
+
+vi.mock('@utils/variables', async () => {
+  const actual = await vi.importActual('@utils/variables');
+
+  return {
+    ...actual,
+    useDropdown: () => ({
+      showDropdown: false,
+      dropdownPosition: {},
+      openDropdown: openDropdownMock,
+      closeDropdown: closeDropdownMock,
+    }),
+    useLocalStorageVariables: () => [],
+  };
+});
+
 vi.mock('@context/AuthContext', () => ({
   useAuth: () => ({
     user: {},
@@ -50,6 +68,19 @@ describe('RestClientForm Component', () => {
       </NextIntlClientProvider>,
     );
   };
+
+  vi.mock('./DropdownList', () => {
+    return {
+      default: (props: { onSelect: (arg: string) => void }) => (
+        <button
+          data-testid="dropdown-select"
+          onClick={() => props.onSelect('varName')}
+        >
+          Select Variable
+        </button>
+      ),
+    };
+  });
 
   it('renders correctly and handles input changes', () => {
     renderRestClientForm();
@@ -101,5 +132,43 @@ describe('RestClientForm Component', () => {
     );
 
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
+  });
+  it('updates header value when header input is changed', () => {
+    renderRestClientForm();
+    const headerValueInput = screen.getByDisplayValue('application/json') as HTMLInputElement;
+
+    fireEvent.change(headerValueInput, { target: { value: 'application/xml' } });
+    expect(screen.getByDisplayValue('application/xml')).toBeInTheDocument();
+  });
+
+  it('calls openDropdown with the correct coordinates when textBeforeCursor ends with "{"', () => {
+    renderRestClientForm();
+
+    const urlInput = screen.getByPlaceholderText(/url/i) as HTMLInputElement;
+
+    const fakeRect = { top: 100, left: 50, width: 300, height: 40, bottom: 140, right: 350 };
+
+    urlInput.getBoundingClientRect = () => fakeRect as DOMRect;
+
+    Object.defineProperty(urlInput, 'offsetHeight', { configurable: true, value: 20 });
+
+    Object.defineProperty(urlInput, 'selectionStart', { configurable: true, value: 22 });
+
+    fireEvent.change(urlInput, { target: { value: 'https://example.com{' } });
+
+    expect(openDropdownMock).toHaveBeenCalledWith({
+      top: fakeRect.top + 0 + 20,
+      left: fakeRect.left + 0,
+    });
+  });
+
+  it('inserts variable correctly into URL and closes dropdown', () => {
+    renderRestClientForm();
+    const urlInput = screen.getByPlaceholderText(/url/i) as HTMLInputElement;
+
+    expect(urlInput.value).toBe('https://example.com');
+    Object.defineProperty(urlInput, 'selectionStart', { value: 2, writable: true });
+    fireEvent.click(screen.getByTestId('dropdown-select'));
+    expect(urlInput.value).toBe('h{{varName}}tps://example.com');
   });
 });

@@ -32,6 +32,18 @@ vi.mock('@context/AuthContext', () => ({
   }),
 }));
 
+const mockOpenDropdown = vi.fn();
+const mockCloseDropdown = vi.fn();
+
+vi.mock('@utils/variables', () => ({
+  useDropdown: () => ({
+    showDropdown: false,
+    dropdownPosition: { top: 0, left: 0 },
+    openDropdown: mockOpenDropdown,
+    closeDropdown: mockCloseDropdown,
+  }),
+}));
+
 const renderRequestHeaders = (locale = 'en', headers = mockHeaders) => {
   render(
     <NextIntlClientProvider
@@ -43,7 +55,7 @@ const renderRequestHeaders = (locale = 'en', headers = mockHeaders) => {
         onAdd={mockOnAdd}
         onRemove={mockOnRemove}
         onChange={mockOnChange}
-        variables={[]}
+        variables={[{ key: 'testKey', value: 'testValue' }]}
       />
     </NextIntlClientProvider>,
   );
@@ -113,5 +125,60 @@ describe('SignUpPage', () => {
 
     expect(screen.queryByPlaceholderText('Header Key')).not.toBeInTheDocument();
     expect(screen.queryByPlaceholderText('Header Value')).not.toBeInTheDocument();
+  });
+
+  it('calls onChange and openDropdown when the input value ends with "{"', () => {
+    renderRequestHeaders('en', [{ key: '', value: '' }]);
+    const keyInput = screen.getByPlaceholderText('Header Key') as HTMLInputElement;
+    const testValue = 'Test{';
+
+    fireEvent.change(keyInput, {
+      target: { value: testValue, selectionStart: testValue.length },
+    });
+    expect(mockOnChange).toHaveBeenCalledWith(0, 'key', testValue);
+    expect(mockOpenDropdown).toHaveBeenCalledWith({ top: 0, left: 0 });
+  });
+
+  it('calls onChange and closeDropdown when the input value does NOT end with "{"', () => {
+    renderRequestHeaders('en', [{ key: '', value: '' }]);
+
+    const keyInput = screen.getByPlaceholderText('Header Key') as HTMLInputElement;
+
+    const testValue = 'Test';
+
+    fireEvent.change(keyInput, {
+      target: { value: testValue, selectionStart: testValue.length },
+    });
+
+    expect(mockOnChange).toHaveBeenCalledWith(0, 'key', testValue);
+    expect(mockCloseDropdown).toHaveBeenCalled();
+  });
+
+  it('calls onChange and openDropdown when the value input ends with "{"', () => {
+    renderRequestHeaders('en', [{ key: '', value: '' }]);
+    const valueInput = screen.getByPlaceholderText('Header Value') as HTMLInputElement;
+
+    const testValue = 'Something{';
+
+    fireEvent.change(valueInput, {
+      target: { value: testValue, selectionStart: testValue.length },
+    });
+
+    expect(mockOnChange).toHaveBeenCalledWith(0, 'value', testValue);
+    expect(mockOpenDropdown).toHaveBeenCalledWith({ top: 0, left: 0 });
+  });
+
+  it('calls onChange and closeDropdown when the value input does not end with "{"', () => {
+    renderRequestHeaders('en', [{ key: '', value: '' }]);
+
+    const valueInput = screen.getByPlaceholderText('Header Value') as HTMLInputElement;
+    const testValue = 'Something';
+
+    fireEvent.change(valueInput, {
+      target: { value: testValue, selectionStart: testValue.length },
+    });
+
+    expect(mockOnChange).toHaveBeenCalledWith(0, 'value', testValue);
+    expect(mockCloseDropdown).toHaveBeenCalled();
   });
 });

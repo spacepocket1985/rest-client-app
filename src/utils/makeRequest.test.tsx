@@ -105,4 +105,69 @@ describe('makeRequest', () => {
       method: Method.POST,
     });
   });
+  it('sends raw string body (instead of JSON.stringify)', async () => {
+    const url = 'https://api.example.com/string-body';
+    const rawBody = 'this-is-already-a-string';
+    const mockFetch = vi.fn().mockResolvedValueOnce({
+      ok: true,
+      status: 202,
+      json: vi.fn().mockResolvedValue({ ok: true }),
+    });
+
+    global.fetch = mockFetch;
+
+    const response = await makeRequest({
+      method: Method.POST,
+      url,
+      body: rawBody,
+      headers: { 'X-Custom': '123' },
+    });
+
+    expect(mockFetch).toHaveBeenCalledWith(url, {
+      method: Method.POST,
+      headers: { 'X-Custom': '123' },
+      body: rawBody,
+    });
+    expect(response).toEqual({
+      status: 202,
+      result: { ok: true },
+      method: Method.POST,
+    });
+  });
+
+  it('falls back to statusText if error response has no message field', async () => {
+    const mockFetch = vi.fn().mockResolvedValueOnce({
+      ok: false,
+      status: 401,
+      statusText: 'Unauthorized',
+      json: vi.fn().mockResolvedValue({}),
+    });
+
+    global.fetch = mockFetch;
+
+    const response = await makeRequest({
+      method: Method.DELETE,
+      url: 'https://api.example.com/unauth',
+    });
+
+    expect(response).toEqual({
+      status: 401,
+      error: 'Unauthorized',
+      method: Method.DELETE,
+    });
+  });
+  it('handles non‑Error rejections with the unknown‑error message', async () => {
+    global.fetch = vi.fn().mockRejectedValueOnce('oh no');
+
+    const response = await makeRequest({
+      method: Method.DELETE,
+      url: 'https://api.example.com/nowhere',
+    });
+
+    expect(response).toEqual({
+      status: 500,
+      error: 'Unknown error occurred',
+      method: Method.DELETE,
+    });
+  });
 });
