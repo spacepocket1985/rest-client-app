@@ -4,29 +4,38 @@ import RequestBody, { RequestBodyProps } from './RequestBody';
 import { notifyError } from '@utils/notify';
 import { NextIntlClientProvider } from 'next-intl';
 import messages from '../../messages/en.json';
+import { LegacyRef } from 'react';
 
 vi.mock('@utils/notify', () => ({
   notifyError: vi.fn(),
 }));
 
-vi.mock('@uiw/react-codemirror', () => {
-  return {
-    __esModule: true,
-    default: (props: {
-      value: string | number | readonly string[] | undefined;
-      onChange: (
-        arg0: string,
-        arg1: {
-          view: {
-            state: { selection: { main: { head: number } } };
-            coordsAtPos: (pos: number) => { bottom: number; left: number };
-          };
-        },
-      ) => void;
-    }) => (
+vi.mock('@uiw/react-codemirror', async () => {
+  const React = await import('react');
+
+  const MockCodeMirror = React.forwardRef(
+    (
+      {
+        value,
+        onChange,
+      }: {
+        value: string;
+        onChange: (
+          arg0: string,
+          arg1: {
+            view: {
+              state: { selection: { main: { head: number } } };
+              coordsAtPos: (pos: number) => { bottom: number; left: number };
+            };
+          },
+        ) => void;
+      },
+      ref: LegacyRef<HTMLTextAreaElement> | undefined,
+    ) => (
       <textarea
+        ref={ref}
         data-testid="codeMirror"
-        value={props.value}
+        value={value}
         onChange={(e) => {
           const val = e.target.value;
           const fakeView = {
@@ -34,10 +43,15 @@ vi.mock('@uiw/react-codemirror', () => {
             coordsAtPos: () => ({ bottom: 100, left: 200 }),
           };
 
-          props.onChange(val, { view: fakeView });
+          onChange(val, { view: fakeView });
         }}
       />
     ),
+  );
+
+  return {
+    __esModule: true,
+    default: MockCodeMirror,
     EditorView: { lineWrapping: 'lineWrapping' },
     ReactCodeMirrorRef: null,
   };
