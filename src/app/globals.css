@@ -1,0 +1,19 @@
+@import 'tailwindcss';
+
+:root {
+  --second-color: #1a76d1;
+  --third-color: #2c2d3f;
+  --fourth-color: #b80a5ee9;
+}
+
+html {
+  text-align: center;
+  font-size: 10px;
+}
+
+body {
+  font-size: 1.4rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

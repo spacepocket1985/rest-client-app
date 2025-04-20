@@ -1,0 +1,5 @@
+
+npm run coverage
+
+npm run lint:fix
+npm run format:fix

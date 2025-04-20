@@ -1,0 +1,140 @@
+{
+  "Header": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "logout": "Logout",
+    "home": "Home"
+  },
+
+  "WelcomePage": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "restClient": "Rest-client",
+    "history": "History",
+    "variables": "Variables",
+    "welcome": "Welcome!",
+    "welcomeBack": "Welcome back",
+    "appDescription": "This application is a lightweight platform for using and building APIs. It supports method selection, URL inputs, and headers. It was created by a team of students during the React course at RS School. Try it out!",
+    "rsTitle": "RS School React Course",
+    "rsDescription": "RS School is a free, community-driven online education program conducted by The Rolling Scopes Community since 2013. Over 500 developers from various countries and companies actively participate as mentors in the education process.",
+    "rsLink": "Visit RS School Website",
+    "devsTitle": "Developers",
+    "teamLead": "Team-lead, developer",
+    "developer": "Developer",
+    "dev1": "Aliaksandr Klintsevich",
+    "dev2": "Mykhailo Nikolaiev",
+    "dev3": "Oleksandr Mazghin"
+  },
+
+  "SignUpForm": {
+    "title": "Sign Up",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "submitButtonText": "Sign Up",
+    "common": {
+      "questionText": "Do you already have an account?",
+      "linkText": "Sign In"
+    },
+    "loading": "Registering...",
+    "successMessage": "You have successfully registered!",
+    "errorMessage": "An error occurred while registering."
+  },
+  "SignInForm": {
+    "title": "Sign In",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "submitButtonText": "Sign In",
+    "common": {
+      "questionText": "Don’t have an account?",
+      "linkText": "Register"
+    },
+    "loading": "Loading authentication...",
+    "successMessage": "You have successfully signed in!",
+    "errorMessage": "An error occurred while authentication."
+  },
+  "Validation": {
+    "validationNameRequired": "Name is required.",
+    "validationName2Characters": "Name must be at least 2 characters.",
+    "validationEmailRequired": "Email is required.",
+    "validationEmailInvalid": "Invalid email.",
+    "validationEmailInvalidOrDomain": "Invalid email format or missing domain.",
+    "validationEmailInvalidLocalToggle": "Invalid localToggle-part format.",
+    "validationPasswordRequired": "Password is required.",
+    "validationPasswordValidSetOfCharacters": "Password must only contain Latin symbols, digits, special characters adnd unicode symbols.",
+    "validationPasswordUpperCaseLetter": "Password must contain at least one uppercase letter.",
+    "validationPasswordLowerCaseLetter": "Password must contain at least one lowercase letter.",
+    "validationPasswordDigit": "Password must contain at least one digit.",
+    "validationPasswordSpecialChar": "Password must contain at least one special character.",
+    "validationPasswordWhitespace": "Password must not contain whitespace.",
+    "validationPasswordSize": "Must be at least 8 characters.",
+    "validationConfirmPasswordRequired": "Confirm Password is required.",
+    "validationConfirmPasswordDoestMatch": "Confirm Password does not match."
+  },
+  "History": {
+    "title": "History Requests",
+    "clear": "Clear history",
+    "description": "You haven't executed any requests. It's empty here. Try:",
+    "restClient": "Rest-client"
+  },
+  "Rest": {
+    "titles": {
+      "restClient": "REST Client",
+      "body": "Body",
+      "headers": "Headers",
+      "response": "Response",
+      "statusCode": "Status Code:",
+      "generatedCode": "Generate Code"
+    },
+    "placeholders": {
+      "url": "Endpoint URL",
+      "headerkey": "Header Key",
+      "headerValue": "Header Value"
+    },
+    "buttons": {
+      "sendRequest": "Send request",
+      "sending": "Sending...",
+      "prettyify": "Prettyify"
+    },
+    "messages": {
+      "respons": "Your response will be here",
+      "codeGenerationFailed": "codeGenerationFailed",
+      "noCodeGenerated": "No code generated",
+      "invalidJSON": "Invalid JSON:"
+    },
+    "select": {
+      "text": "text"
+    }
+  },
+  "PostamnCodeGen": {
+    "title": "Generated Request Code",
+    "selectLang": "Language:",
+    "genCode": "Generating code..",
+    "copy": "copy",
+
+    "messages": {
+      "requiredURLAndMethod": "URL and method are required to generate code",
+      "failedGenerate": "Failed to generate code",
+      "errorCreatingRequest": "Error creating request",
+      "selecatLangTogenerate": "Select a language to generate code"
+    }
+  },
+  "VariablesSection": {
+    "title": "Variables",
+    "variable": "Variable",
+    "value": "Value",
+    "namePlaceholder": "Variable name",
+    "valuePlaceholder": "Variable value",
+    "addButton": "Add Variable",
+    "errorDuplicate": "A variable with this name already exists.",
+    "update": "Update",
+    "delete": "Delete"
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "description": "The page you requested does not exist.",
+    "backHome": "Go to Homepage"
+  }
+}
