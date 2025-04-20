@@ -1,4 +1,3 @@
-// app/[locale]/rest/[[...slug]]/page.tsx
 import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { decodeBase64, spaceInBase64 } from '@utils/base64';
@@ -21,7 +20,8 @@ const RestClient = dynamic(() => import('@components/rest/RestClient'), {
 });
 
 export default async function RestClientPage({ params, searchParams }: RestPageProps) {
-  const { slug, locale } = params;
+  const { slug, locale } = await params;
+  const resolvedSearchParams = await searchParams;
 
   const method = slug?.[0] || Method.GET;
 
@@ -30,7 +30,6 @@ export default async function RestClientPage({ params, searchParams }: RestPageP
   }
 
   const endpoint = slug?.[1] && slug[1] !== spaceInBase64 ? decodeBase64(slug[1]) : '';
-  const resolvedSearchParams = searchParams;
 
   const headers: HeadersInit =
     Object.keys(resolvedSearchParams).length > 0 ?
